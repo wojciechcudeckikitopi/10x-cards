@@ -48,3 +48,12 @@ export const flashcardIdSchema = z.object({
 });
 
 export type FlashcardIdParam = z.infer<typeof flashcardIdSchema>;
+
+// Schema for updating a flashcard
+export const updateFlashcardSchema = z.object({
+  front: z.string().max(MAX_FRONT_LENGTH, `Front text cannot exceed ${MAX_FRONT_LENGTH} characters`).optional(),
+  back: z.string().max(MAX_BACK_LENGTH, `Back text cannot exceed ${MAX_BACK_LENGTH} characters`).optional(),
+  status: z.enum(["accepted", "rejected"]).optional(),
+});
+
+export type UpdateFlashcardSchema = z.infer<typeof updateFlashcardSchema>;

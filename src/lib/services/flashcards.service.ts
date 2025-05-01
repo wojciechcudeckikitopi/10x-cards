@@ -67,4 +67,12 @@ export class FlashcardsService {
       },
     };
   }
+
+  async deleteFlashcard(userId: string, flashcardId: string): Promise<void> {
+    const { error } = await this.supabase.from("flashcards").delete().eq("id", flashcardId).eq("user_id", userId);
+
+    if (error) {
+      throw new Error(`Failed to delete flashcard: ${error.message}`);
+    }
+  }
 }
