@@ -32,5 +32,9 @@
     "typescript",
     "typescriptreact",
     "astro"
+  ],
+  "cSpell.words": [
+    "supabase",
+    "Supabase"
   ]
 }
