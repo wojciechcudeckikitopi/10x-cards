@@ -28,3 +28,23 @@ export const createFlashcardsSchema = z.object({
     .min(1, "At least one flashcard is required")
     .max(100, "Maximum 100 flashcards can be created at once"),
 });
+
+// Schema for GET /flashcards query parameters
+export const GetFlashcardsQuerySchema = z.object({
+  page: z.coerce.number().int().min(0).default(0),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+  status: z
+    .enum(["pending", "accepted", "rejected"] as const)
+    .array()
+    .default(["pending", "accepted", "rejected"]),
+  sort_by: z.enum(["created_at", "updated_at"] as const).default("updated_at"),
+});
+
+export type GetFlashcardsQuery = z.infer<typeof GetFlashcardsQuerySchema>;
+
+// Schema for GET /flashcards/:id parameter
+export const flashcardIdSchema = z.object({
+  id: z.string().uuid(),
+});
+
+export type FlashcardIdParam = z.infer<typeof flashcardIdSchema>;
