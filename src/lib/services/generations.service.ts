@@ -42,6 +42,7 @@ export class GenerationsService {
         source_text_length: sourceTextLength,
         generated_count: mockFlashcards.length,
         llm_model: "gpt-4o-mini",
+        generation_duration: 1000,
       } as GenerationInsert)
       .select()
       .single();
