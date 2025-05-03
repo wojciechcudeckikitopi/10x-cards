@@ -21,14 +21,14 @@ Ogólny przegląd zakłada istnienie uporządkowanej struktury widoków odpowiad
    - UX, dostępność i bezpieczeństwo: Responsywny design, intuicyjna nawigacja, czytelne prezentowanie informacji, zabezpieczenia sesyjne.
 
 3. **Widok generowania fiszek**
-   - Ścieżka: `/flashcards/generate`
+   - Ścieżka: `/generate`
    - Główny cel: Umożliwienie wprowadzenia przez użytkownika tekstu, a następnie automatyczne generowanie fiszek przez AI. 
    - Kluczowe informacje do wyświetlenia: Obszar tekstowy do wprowadzania źródłowego tekstu (1000-10 000 znaków), podgląd wygenerowanych fiszek z opcjami akceptacji, odrzucenia, edycji oraz grupowego zatwierdzania zmian.
    - Kluczowe komponenty widoku: Formularz tekstowy, przycisk generowania, modal do edycji fiszek, skeleton loader i komunikaty o błędach. Dodatkowo przyciski "zapisz wszystkie" i "zapisz zatwierdzone".
    - UX, dostępność i bezpieczeństwo: Jasne instrukcje, walidacja długości, responsywność, bezpieczna komunikacja z API.
 
 4. **Widok listy fiszek**
-   - Ścieżka: `/flashcards/list`
+   - Ścieżka: `/flashcards`
    - Główny cel: Prezentacja listy fiszek (zarówno manualnych, jak i AI-wygenerowanych) z możliwością edycji, usuwania.
    - Kluczowe informacje do wyświetlenia: Lista fiszek z informacjami (front, status, data utworzenia), kontekstowe menu akcji (edytuj, usuń), status zmian (zatwierdzone/odrzucone).
    - Kluczowe komponenty widoku: Tabela lub lista elementów, modal edycji, kontekstowe submenu

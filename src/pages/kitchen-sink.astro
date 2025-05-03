@@ -1,0 +1,141 @@
+---
+import { ButtonsSection } from "../components/sections/ButtonsSection";
+import { DialogSection } from "../components/sections/DialogSection";
+import { Avatar } from "../components/ui/Avatar";
+import { Button } from "../components/ui/Button";
+import { Card } from "../components/ui/Card";
+import { Toast } from "../components/ui/Feedback";
+import { Form, FormField } from "../components/ui/Form";
+import { Input } from "../components/ui/Input";
+import { NavigationItem, NavigationMenu } from "../components/ui/Navigation";
+import { Typography } from "../components/ui/Typography";
+import Layout from "../layouts/Layout.astro";
+
+const demoUser = {
+  name: "John Doe",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
+};
+
+const demoNavItems = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+const demoListItems = ["First item", "Second item", "Third item"];
+---
+
+<Layout title="Kitchen Sink - UI Components">
+  <main class="container mx-auto px-4 py-8">
+    <Typography variant="h1" className="mb-8">Kitchen Sink - UI Components</Typography>
+
+    <div class="space-y-12">
+      {/* Typography Section */}
+      <section>
+        <Card>
+          <Typography variant="h2" className="mb-4">Typography</Typography>
+          <div class="space-y-2">
+            <Typography variant="h1">Heading 1</Typography>
+            <Typography variant="h2">Heading 2</Typography>
+            <Typography variant="h3">Heading 3</Typography>
+            <Typography variant="body">Body text example</Typography>
+            <Typography variant="small">Small text example</Typography>
+          </div>
+        </Card>
+      </section>
+
+      {/* Buttons Section */}
+      <ButtonsSection client:load />
+
+      {/* Form Controls Section */}
+      <section>
+        <Card>
+          <Typography variant="h2" className="mb-4">Form Controls</Typography>
+          <Form
+            className="space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              console.log("Form submitted");
+            }}
+          >
+            <FormField label="Text Input" required>
+              <Input type="text" placeholder="Text input" size="md" />
+            </FormField>
+
+            <FormField label="Email Input" required>
+              <Input type="email" placeholder="Email input" size="md" />
+            </FormField>
+
+            <FormField label="Password Input" required>
+              <Input type="password" placeholder="Password input" size="md" />
+            </FormField>
+
+            <FormField label="Input with Error" error="This field has an error">
+              <Input type="text" placeholder="Error state" error={true} />
+            </FormField>
+
+            <FormField label="Input with Helper Text" description="This is a helpful description">
+              <Input type="text" placeholder="With helper text" />
+            </FormField>
+
+            <Button type="submit" variant="primary">Submit Form</Button>
+          </Form>
+        </Card>
+      </section>
+
+      {/* Avatar Section */}
+      <section>
+        <Card>
+          <Typography variant="h2" className="mb-4">Avatars</Typography>
+          <div class="flex gap-4 items-center">
+            <Avatar src={demoUser.avatar} alt={demoUser.name} size="sm" />
+            <Avatar src={demoUser.avatar} alt={demoUser.name} size="md" />
+            <Avatar src={demoUser.avatar} alt={demoUser.name} size="lg" />
+          </div>
+        </Card>
+      </section>
+
+      {/* Navigation Section */}
+      <section>
+        <Card>
+          <Typography variant="h2" className="mb-4">Navigation</Typography>
+          <NavigationMenu>
+            {demoNavItems.map((item) => <NavigationItem href={item.href}>{item.label}</NavigationItem>)}
+          </NavigationMenu>
+        </Card>
+      </section>
+
+      {/* List Section */}
+      <section>
+        <Card>
+          <Typography variant="h2" className="mb-4">Lists</Typography>
+          <div class="space-y-2">
+            {demoListItems.map((item) => <div>{item}</div>)}
+          </div>
+        </Card>
+      </section>
+
+      {/* Dialog Section */}
+      <DialogSection client:load />
+
+      {/* Toast Section */}
+      <section>
+        <Card>
+          <Typography variant="h2" className="mb-4">Toast Messages</Typography>
+          <div class="space-y-4">
+            <Toast variant="success" title="Success" description="Operation completed successfully!" />
+            <Toast variant="error" title="Error" description="An error occurred." />
+            <Toast variant="warning" title="Warning" description="Please review your input." />
+            <Toast variant="default" title="Information" description="Here's some useful information." />
+          </div>
+        </Card>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .container {
+    max-width: 1200px;
+  }
+</style>
