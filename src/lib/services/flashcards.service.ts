@@ -27,7 +27,7 @@ export class FlashcardsService {
 
   async getFlashcards(userId: string, query: GetFlashcardsQuery): Promise<PaginatedResponse<FlashcardDTO>> {
     const { page, limit, status, sort_by } = query;
-    const offset = page * limit;
+    const offset = (Math.max(page, 1) - 1) * limit;
 
     // Start building the query
     let dbQuery = this.supabase
