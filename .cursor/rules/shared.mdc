@@ -3,9 +3,9 @@ description:
 globs: 
 alwaysApply: true
 ---
-# AI Rules for {app-name}
+# AI Rules for 10x-cards
 
-{project-description}
+10x-Cards is a web application designed to simplify the creation and management of high-quality educational flashcards leveraging AI technology. Additionally, the platform integrates with an external spaced repetition algorithm to optimize learning sessions.
 
 ## Tech Stack
 

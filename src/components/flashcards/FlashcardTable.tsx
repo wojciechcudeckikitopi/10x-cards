@@ -1,5 +1,5 @@
 import { type FlashcardDTO } from "../../types";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table";
 import { FlashcardActions } from "./FlashcardActions";
 
 interface FlashcardTableProps {
