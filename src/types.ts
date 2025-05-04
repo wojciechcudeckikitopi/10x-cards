@@ -47,7 +47,7 @@ export type FlashcardDTO = Omit<FlashcardRow, "user_id"> & {
  *
  * Utilizes fields from the FlashcardInsert type.
  */
-export type CreateFlashcardDTO = Pick<FlashcardInsert, "front" | "back"> & {
+export type CreateFlashcardDTO = Pick<FlashcardInsert, "front" | "back" | "status"> & {
   source: FlashcardSource;
   generation_id?: string;
 };

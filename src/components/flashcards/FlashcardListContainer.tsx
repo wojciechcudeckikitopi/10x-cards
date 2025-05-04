@@ -83,7 +83,7 @@ export function FlashcardListContainer() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedCardData as UpdateFlashcardDTO),
+        body: JSON.stringify({ ...updatedCardData, status: "accepted" } as UpdateFlashcardDTO),
       });
 
       if (!response.ok) {

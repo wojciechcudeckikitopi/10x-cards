@@ -153,6 +153,7 @@ export class OpenRouterService {
   }
 
   private convertJsonSchemaToZod(schema: Record<string, unknown>): Record<string, z.ZodType> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const convertSchema = (schemaNode: any): z.ZodType => {
       if (typeof schemaNode !== "object" || !schemaNode) {
         return z.unknown();

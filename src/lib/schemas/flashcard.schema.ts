@@ -6,6 +6,7 @@ const MAX_BACK_LENGTH = 500;
 
 // Schema for flashcard source enum
 const flashcardSourceSchema = z.enum(["manual", "ai", "ai-edited"] as const);
+const flashcardStatusSchema = z.enum(["pending", "accepted", "rejected"] as const);
 
 // Schema for a single flashcard in the create request
 export const createFlashcardSchema = z.object({
@@ -18,6 +19,7 @@ export const createFlashcardSchema = z.object({
     .min(1, "Back text is required")
     .max(MAX_BACK_LENGTH, `Back text cannot exceed ${MAX_BACK_LENGTH} characters`),
   source: flashcardSourceSchema,
+  status: flashcardStatusSchema,
   generation_id: z.string().uuid().optional(),
 });
 
