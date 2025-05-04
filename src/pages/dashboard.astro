@@ -1,0 +1,10 @@
+---
+import DashboardView from "../components/DashboardView";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Dashboard - 10x Cards">
+  <main class="container mx-auto py-8 px-4">
+    <DashboardView client:load />
+  </main>
+</Layout>

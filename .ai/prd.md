@@ -61,6 +61,13 @@ Kryteria akceptacji:
 - Użytkownik może resetować hasło i zarządzać swoimi danymi.
 
 US-005  
+Tytuł: Zarządzanie fiszkami uzytkownika
+Opis: Jako użytkownik chcę mieć możliwość zarzadzania listą fiszek (zarówno manualnych, jak i AI-wygenerowanych) z możliwością edycji, usuwania. 
+Kryteria akceptacji:
+- Widoczna lista fiszek uzytkownika z informacjami (front, status, data utworzenia)
+- Na kazdym wierszu kontekstowe menu akcji (edytuj, usuń)
+
+US-006  
 Tytuł: Sesja nauki z algorytmem powtórek  
 Opis: Jako użytkownik chcę, aby dodane fiszki były dostępne w widoku "Sesja nauki" opartym na zewnętrznym algorytmie spaced repetition, aby zoptymalizować proces nauki.  
 Kryteria akceptacji:
