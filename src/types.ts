@@ -175,3 +175,15 @@ export interface PaginatedResponse<T> {
   data: T[];
   pagination: Pagination;
 }
+
+/**
+ * DashboardStatsViewModel
+ * Represents aggregated statistics for the dashboard view.
+ * Data is derived from multiple calls to GET /api/flashcards with different status filters.
+ */
+export interface DashboardStatsViewModel {
+  totalFlashcards: number;
+  pendingCount: number;
+  acceptedCount: number;
+  rejectedCount: number;
+}
