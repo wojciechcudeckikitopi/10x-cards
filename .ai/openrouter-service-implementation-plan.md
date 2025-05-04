@@ -47,7 +47,7 @@ public async sendMessage<T>(options: {
      }
    };
    ```
-4. `modelName`: identyfikator modelu (np. `openai/gpt-4o`).
+4. `modelName`: identyfikator modelu (np. `openai/gpt-4o-mini`).
 5. `modelParams`: opcjonalne parametry modelu (temperatura, max_tokens, itp.).
 
 Metoda zwraca `ChatResponse<T>` z polami:
@@ -129,7 +129,7 @@ Potencjalne scenariusze i mapowane wyjątki:
      systemMessage: 'You are a helpful assistant.',
      userMessage: 'Explain photosynthesis.',
      responseFormat: format,
-     modelName: 'openai/gpt-4o',
+     modelName: 'openai/gpt-4o-mini',
      modelParams: { temperature: 0.7, max_tokens: 300 }
    });
    
