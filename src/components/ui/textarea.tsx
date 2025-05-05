@@ -1,4 +1,4 @@
-import { Label } from "@/components/ui/Label";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { XCircle } from "lucide-react";
@@ -59,6 +59,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) => {
     const [textValue, setTextValue] = React.useState(value);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+    React.useEffect(() => {
+      setTextValue(value);
+    }, [value]);
 
     React.useImperativeHandle(ref, () => textareaRef.current as HTMLTextAreaElement);
 

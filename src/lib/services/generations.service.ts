@@ -2,7 +2,6 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createHash } from "crypto";
 import type {
   FlashcardDTO,
-  FlashcardProposalDTO,
   GenerationCreateResponseDTO,
   GenerationDetailsDTO,
   GenerationDTO,
@@ -10,62 +9,156 @@ import type {
   GenerationRow,
   PaginatedResponse,
 } from "../../types";
+import { OpenRouterService } from "../openrouter.service";
+import type { JSONSchema } from "../openrouter.types";
 import type { GenerationQueryParams } from "../schemas/generation.schema";
 
+const FLASHCARDS_SCHEMA: JSONSchema = {
+  name: "flashcardsSchema",
+  strict: true,
+  schema: {
+    type: "object",
+    properties: {
+      flashcards: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            front: {
+              type: "string",
+            },
+            back: {
+              type: "string",
+            },
+          },
+          required: ["front", "back"],
+          additionalProperties: false,
+        },
+      },
+    },
+    required: ["flashcards"],
+    additionalProperties: false,
+  },
+};
+
+const SYSTEM_PROMPT = `You are an expert educational assistant specializing in creating high-quality flashcards.
+Your task is to analyze the provided text and create concise, effective flashcards following these rules:
+1. Each flashcard should focus on a single concept
+2. Front side should be a clear, specific question
+3. Back side should provide a concise but complete answer
+4. Avoid overly complex or compound questions
+5. Ensure answers are accurate and directly related to the question
+6. Use clear, simple language
+7. Maintain consistency in formatting
+8. Avoid yes/no questions
+9. Front side maximum length: 200 characters
+10. Back side maximum length: 500 characters
+
+Return the flashcards in JSON format matching this schema:
+{
+  "flashcards": [
+    {
+      "front": "question text",
+      "back": "answer text"
+    }
+  ]
+}`;
+
 export class GenerationsService {
-  constructor(private readonly supabase: SupabaseClient) {}
+  private readonly openRouter: OpenRouterService;
+
+  constructor(private readonly supabase: SupabaseClient) {
+    this.openRouter = new OpenRouterService({
+      apiKey: import.meta.env.OPENROUTER_API_KEY,
+      baseURL: "https://openrouter.ai/api/v1",
+    });
+  }
 
   private generateTextHash(text: string): string {
     return createHash("sha256").update(text).digest("hex");
   }
 
-  private generateMockFlashcards(): FlashcardProposalDTO[] {
-    return [
-      {
-        front: "What is TypeScript?",
-        back: "TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.",
-        source: "ai",
-      },
-      {
-        front: "What are the benefits of using TypeScript?",
-        back: "TypeScript offers static typing, better IDE support, early error detection, and improved code maintainability through type annotations.",
-        source: "ai",
-      },
-      {
-        front: "How does TypeScript relate to JavaScript?",
-        back: "TypeScript is a superset of JavaScript that compiles to clean JavaScript output, meaning any valid JavaScript code is also valid TypeScript code.",
-        source: "ai",
-      },
-    ];
-  }
-
   async createGeneration(userId: string, sourceText: string): Promise<GenerationCreateResponseDTO> {
-    const sourceTextHash = this.generateTextHash(sourceText);
-    const sourceTextLength = sourceText.length;
-    const mockFlashcards = this.generateMockFlashcards();
+    const startTime = Date.now();
 
-    const { data: generation, error } = await this.supabase
-      .from("generations")
-      .insert({
-        user_id: userId,
-        source_text_hash: sourceTextHash,
-        source_text_length: sourceTextLength,
-        generated_count: mockFlashcards.length,
-        llm_model: "gpt-4o-mini",
-        generation_duration: 1000,
-      } as GenerationInsert)
-      .select()
-      .single();
+    try {
+      // Call OpenRouter API to generate flashcards
+      const response = await this.openRouter.sendMessage<{ flashcards: { front: string; back: string }[] }>({
+        systemMessage: SYSTEM_PROMPT,
+        userMessage: sourceText,
+        modelName: "openai/gpt-4o-mini",
+        responseFormat: {
+          type: "json_schema",
+          json_schema: FLASHCARDS_SCHEMA,
+        },
+        modelParams: {
+          temperature: 0.7,
+          max_tokens: 2000,
+        },
+      });
 
-    if (error) {
-      throw new Error(`Failed to create generation: ${error.message}`);
+      const generationDuration = Date.now() - startTime;
+      const sourceTextHash = this.generateTextHash(sourceText);
+      const sourceTextLength = sourceText.length;
+
+      const flashcardProposals = response.data.flashcards.map((card) => ({
+        ...card,
+        source: "ai" as const,
+      }));
+
+      // Create generation record
+      const { data: generation, error } = await this.supabase
+        .from("generations")
+        .insert({
+          user_id: userId,
+          source_text_hash: sourceTextHash,
+          source_text_length: sourceTextLength,
+          generated_count: flashcardProposals.length,
+          llm_model: "gpt-4o-mini",
+          generation_duration: generationDuration,
+        } as GenerationInsert)
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(`Failed to create generation: ${error.message}`);
+      }
+
+      return {
+        generation_id: generation.id,
+        flashcards: flashcardProposals,
+        generated_count: flashcardProposals.length,
+      };
+    } catch (error) {
+      // Store error information if generation fails
+      const sourceTextHash = this.generateTextHash(sourceText);
+      const sourceTextLength = sourceText.length;
+      const generationDuration = Date.now() - startTime;
+
+      const { data: generation } = await this.supabase
+        .from("generations")
+        .insert({
+          user_id: userId,
+          source_text_hash: sourceTextHash,
+          source_text_length: sourceTextLength,
+          generated_count: 0,
+          llm_model: "gpt-4o-mini",
+          generation_duration: generationDuration,
+          status: "error",
+        } as GenerationInsert)
+        .select()
+        .single();
+
+      if (generation) {
+        await this.supabase.from("generation_errors").insert({
+          generation_id: generation.id,
+          user_id: userId,
+          error_message: error instanceof Error ? error.message : "Unknown error occurred",
+        });
+      }
+
+      throw error;
     }
-
-    return {
-      generation_id: generation.id,
-      flashcards: mockFlashcards,
-      generated_count: mockFlashcards.length,
-    };
   }
 
   /**

@@ -10,7 +10,6 @@ export class FlashcardsService {
     const flashcardsToInsert: FlashcardInsert[] = flashcards.map((flashcard) => ({
       ...flashcard,
       user_id: userId,
-      status: "pending" as const,
       // If generation_id is not provided, we'll use the flashcard's ID as generation_id
       generation_id: flashcard.generation_id ?? crypto.randomUUID(),
     }));

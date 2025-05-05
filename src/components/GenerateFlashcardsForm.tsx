@@ -1,8 +1,8 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
-import { Button } from "@/components/ui/Button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Toast } from "@/components/ui/Feedback";
 import { LoadingIndicator } from "@/components/ui/LoadingIndicator";
-import { Textarea } from "@/components/ui/Textarea";
+import { Textarea } from "@/components/ui/textarea";
 import type {
   CreateFlashcardsCommand,
   FlashcardProposalDTO,
@@ -126,6 +126,7 @@ export function GenerateFlashcardsForm() {
           back: card.back,
           source: card.source,
           generation_id: card.generation_id,
+          status: card.reviewStatus,
         })),
       };
 
@@ -154,7 +155,7 @@ export function GenerateFlashcardsForm() {
 
   const handleSaveAll = () => {
     const cardsToSave = proposedFlashcards.filter(
-      (card) => card.reviewStatus === "pending" || card.reviewStatus === "accepted"
+      (card) => card.reviewStatus === "pending" || card.reviewStatus === "accepted" || card.reviewStatus === "rejected"
     );
     saveFlashcards(cardsToSave);
     setFeedback({
