@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/lib/context/auth.context";
 import { useNavigate } from "@/lib/hooks/useNavigate";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import { useState } from "react";
 
 export function LoginForm() {
@@ -11,10 +11,10 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuthStore();
 
   // Redirect if already logged in
-  if (user) {
+  if (isAuthenticated) {
     navigate("/dashboard");
     return null;
   }
@@ -49,11 +49,11 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
+    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <h1 className="text-2xl font-bold text-center mb-6 dark:text-white">Sign In</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+          <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md dark:bg-red-900/50">
             {error}
           </div>
         )}

@@ -1,6 +1,5 @@
 ---
 import { TopBar } from "../components/TopBar";
-import { AuthProvider } from "../lib/context/auth.context";
 import "../styles/global.css";
 
 interface Props {
@@ -20,12 +19,10 @@ const { title = "10x Astro Starter" } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <AuthProvider client:load>
-      <TopBar client:load />
-      <main class="container mx-auto px-4 py-8">
-        <slot />
-      </main>
-    </AuthProvider>
+    <TopBar client:load />
+    <main class="container mx-auto px-4 py-8">
+      <slot />
+    </main>
   </body>
 </html>
 
