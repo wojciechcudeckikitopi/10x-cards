@@ -1,6 +1,20 @@
 ---
-import { RegisterForm } from "../../components/auth/RegisterForm";
-import Layout from "../../layouts/Layout.astro";
+import { RegisterForm } from "@/components/auth/RegisterForm";
+import { createSupabaseServerInstance } from "@/db/supabase.client";
+import Layout from "@/layouts/Layout.astro";
+
+// Check if user is already logged in
+const supabase = createSupabaseServerInstance({
+  headers: Astro.request.headers,
+  cookies: Astro.cookies,
+});
+
+const { data: { user } } = await supabase.auth.getUser();
+
+// Redirect to dashboard if already logged in
+if (user) {
+  return Astro.redirect("/dashboard");
+}
 ---
 
 <Layout title="Create Account - 10x Cards">

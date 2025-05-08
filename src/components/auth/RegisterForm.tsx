@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from "@/lib/hooks/useNavigate";
+import { useAuthStore } from "@/lib/stores/auth.store";
 import { useState } from "react";
 import { AuthForm } from "./AuthForm";
 
@@ -10,6 +12,14 @@ export function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
+
+  // Redirect if already logged in
+  if (isAuthenticated) {
+    navigate("/dashboard");
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,8 +41,29 @@ export function RegisterForm() {
     }
 
     setIsLoading(true);
-    // Backend integration will be implemented later
-    setIsLoading(false);
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create account");
+      }
+
+      // Successful registration - redirect to dashboard
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred during registration");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
