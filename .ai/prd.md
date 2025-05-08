@@ -35,6 +35,7 @@ Kryteria akceptacji:
 - System automatycznie generuje propozycje fiszek.
 - Fiszki są prezentowane pojedynczo z opcjami: akceptacja, odrzucenie, edycja.
 - Minimum 75% wygenerowanych fiszek musi być akceptowanych przez użytkownika.
+- Funkcjonalność nie jest dostępna bez logowania się do systemu (US-004).
 
 US-002  
 Tytuł: Ręczne tworzenie fiszek  
@@ -43,6 +44,7 @@ Kryteria akceptacji:
 - Użytkownik ma możliwość ręcznego dodania fiszki.
 - Interfejs umożliwia wpisanie przodu fiszki (do 200 znaków) oraz tyłu (do 500 znaków).
 - Walidacja długości treści jest egzekwowana podczas tworzenia nowej fiszki.
+- Funkcjonalność nie jest dostępna bez logowania się do systemu (US-004).
 
 US-003  
 Tytuł: Edycja fiszek  
@@ -51,6 +53,7 @@ Kryteria akceptacji:
 - Użytkownik może wybrać fiszkę do edycji.
 - System umożliwia modyfikację przodu (do 200 znaków) i tyłu (do 500 znaków) fiszki.
 - Edytowana fiszka podlega potwierdzeniu zmian przed zapisaniem.
+- Funkcjonalność nie jest dostępna bez logowania się do systemu (US-004).
 
 US-004  
 Tytuł: Zarządzanie kontem użytkownika i bezpieczny dostęp  
@@ -58,7 +61,19 @@ Opis: Jako użytkownik chcę mieć możliwość rejestracji i logowania, aby bez
 Kryteria akceptacji:
 - System umożliwia rejestrację, logowanie i zarządzanie kontem.
 - Proces uwierzytelniania jest zabezpieczony i zgodny z najlepszymi praktykami.
-- Użytkownik może resetować hasło i zarządzać swoimi danymi.
+- Logowanie i rejestracja odbywają się na dedykowanych stronach.
+- Logowanie wymaga podania adresu email i hasła.
+- Rejestracja wymaga podania adresu email, hasła i potwierdzenia hasła.
+- Użytkownik NIE MOŻE korzystać z funkcji Automatyczne generowanie fiszek bez logowania się do systemu (US-001).
+- Użytkownik NIE MOŻE korzystać z funkcji Ręczne tworzenie fiszek bez logowania się do systemu (US-002).
+- Użytkownik NIE MOŻE korzystać z funkcji Edycja fiszek bez logowania się do systemu (US-003).
+- Użytkownik NIE MOŻE korzystać z funkcji Zarządzanie fiszkami uzytkownika bez logowania się do systemu (US-005).
+- Użytkownik NIE MOŻE korzystać z funkcji Sesja nauki z algorytmem powtórek bez logowania się do systemu (US-006).
+- Użytkownik NIE MOŻE korzystać z funkcji Dashboard / ekran główny bez logowania się do systemu
+- Użytkownik może logować się do systemu poprzez przycisk w prawym górnym rogu (w TopBar).
+- Użytkownik może się wylogować z systemu poprzez przycisk w prawym górnym rogu w głównym @Layout.astro w TopBar
+- Nie korzystamy z zewnętrznych serwisów logowania (np. Google, GitHub).
+- Odzyskiwanie hasła powinno być możliwe.
 
 US-005  
 Tytuł: Zarządzanie fiszkami uzytkownika
@@ -66,6 +81,7 @@ Opis: Jako użytkownik chcę mieć możliwość zarzadzania listą fiszek (zaró
 Kryteria akceptacji:
 - Widoczna lista fiszek uzytkownika z informacjami (front, status, data utworzenia)
 - Na kazdym wierszu kontekstowe menu akcji (edytuj, usuń)
+- Funkcjonalność nie jest dostępna bez logowania się do systemu (US-004).
 
 US-006  
 Tytuł: Sesja nauki z algorytmem powtórek  
@@ -75,6 +91,7 @@ Kryteria akceptacji:
 - Na start wyświetlany jest przód fiszki, poprzez interakcję użytkownik wyświetla jej tył
 - Użytkownik ocenia zgodnie z oczekiwaniami algorytmu na ile przyswoił fiszkę
 - Następnie algorytm pokazuję kolejną fiszkę w ramach nauki
+- Funkcjonalność nie jest dostępna bez logowania się do systemu (US-004).
 
 ## 6. Metryki sukcesu
 - 75% fiszek generowanych przez AI jest akceptowanych przez użytkownika.
