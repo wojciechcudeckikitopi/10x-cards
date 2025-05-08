@@ -1,12 +1,15 @@
 ---
 import { TopBar } from "../components/TopBar";
 import "../styles/global.css";
+import { useAuthStore } from "../lib/stores/auth.store";
 
 interface Props {
   title?: string;
 }
 
 const { title = "10x Astro Starter" } = Astro.props;
+
+const user = Astro.locals.user;
 ---
 
 <!doctype html>
@@ -19,7 +22,7 @@ const { title = "10x Astro Starter" } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <TopBar client:load />
+    <TopBar client:load initialUser={user} />
     <main class="container mx-auto px-4 py-8">
       <slot />
     </main>

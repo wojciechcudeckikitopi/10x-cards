@@ -1,19 +1,50 @@
 import { useEffect, useState } from "react";
+import { useAuthStore } from "../lib/stores/auth.store";
 import { NavigationGroup, NavigationItem, NavigationMenu } from "./ui/Navigation";
 
-export const TopBar = () => {
+interface TopBarProps {
+  initialUser?: {
+    id: string;
+    email: string | null;
+  } | null;
+}
+
+export const TopBar = ({ initialUser }: TopBarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
-
-  // Temporary mock user data - will be replaced with real auth later
-  const mockUser = {
-    id: "user123",
-    isLoggedIn: true,
-  };
+  const { user, isAuthenticated, logout, setUser } = useAuthStore();
 
   useEffect(() => {
     setCurrentPath(new URL(window.location.href).pathname);
   }, []);
+
+  useEffect(() => {
+    if (initialUser) {
+      setUser(initialUser);
+    }
+  }, [initialUser]);
+
+  const handleLogout = async () => {
+    try {
+      // Call logout endpoint
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Clear auth store
+      logout();
+      
+      // Redirect to home page
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   const navigationItems = [
     { href: "/flashcards", label: "Flashcards" },
@@ -44,12 +75,25 @@ export const TopBar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          {mockUser.isLoggedIn ? (
-            <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-              ID: {mockUser.id}
-            </span>
+          {isAuthenticated && user ? (
+            <div className="flex items-center gap-3">
+              <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                {user.email || user.id}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
-            <span className="text-sm text-gray-700">Not logged in</span>
+            <a
+              href="/login"
+              className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+            >
+              Login
+            </a>
           )}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
