@@ -25,17 +25,17 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
     headers: request.headers,
   });
 
-  locals.supabase = supabase;
+  locals.supabase = supabase;  
 
   // IMPORTANT: Always get user session first before any other operations
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (session?.user) {
+  if (user) {
     locals.user = {
-      email: session.user.email,
-      id: session.user.id,
+      email: user.email || null,
+      id: user.id,
     };
     return next();
   }

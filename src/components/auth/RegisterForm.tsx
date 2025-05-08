@@ -83,7 +83,7 @@ export function RegisterForm() {
         </Button>
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+          <a href="/auth/login" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
             Sign in
           </a>
         </p>

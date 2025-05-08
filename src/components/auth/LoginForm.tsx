@@ -86,6 +86,12 @@ export function LoginForm() {
         >
           {isLoading ? "Signing in..." : "Sign In"}
         </Button>
+        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+          Don't have an account?{" "}
+          <a href="/auth/register" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+            Create account
+          </a>
+        </p>
       </form>
     </div>
   );
