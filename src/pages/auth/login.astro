@@ -1,0 +1,26 @@
+---
+import { LoginForm } from "../../components/auth/LoginForm";
+import { createSupabaseServerInstance } from "../../db/supabase.client";
+import Layout from "../../layouts/Layout.astro";
+
+// Check if user is already logged in
+const supabase = createSupabaseServerInstance({
+  headers: Astro.request.headers,
+  cookies: Astro.cookies,
+});
+
+const {
+  data: { session },
+} = await supabase.auth.getSession();
+
+// Redirect to dashboard if already logged in
+if (session) {
+  return Astro.redirect("/dashboard");
+}
+---
+
+<Layout title="Sign in - 10x Cards">
+  <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+    <LoginForm client:load />
+  </div>
+</Layout>

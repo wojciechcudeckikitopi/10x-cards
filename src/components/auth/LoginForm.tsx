@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
+import { supabaseClient } from "@/db/supabase.client";
 import { useState } from "react";
 import { AuthForm } from "./AuthForm";
 
@@ -25,8 +26,25 @@ export function LoginForm() {
     }
 
     setIsLoading(true);
-    // Backend integration will be implemented later
-    setIsLoading(false);
+
+    try {
+      const { error: authError } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        setError(authError.message);
+        return;
+      }
+
+      // Redirect will be handled by the middleware
+      window.location.href = "/dashboard";
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -64,7 +82,7 @@ export function LoginForm() {
           {isLoading ? "Signing in..." : "Sign in"}
         </Button>
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a href="/register" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
             Sign up
           </a>
