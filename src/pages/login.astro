@@ -1,0 +1,10 @@
+---
+import { LoginForm } from "../components/auth/LoginForm";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Sign in - 10x Cards">
+  <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+    <LoginForm client:load />
+  </div>
+</Layout>

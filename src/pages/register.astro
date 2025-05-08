@@ -1,0 +1,10 @@
+---
+import { RegisterForm } from "../components/auth/RegisterForm";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Create Account - 10x Cards">
+  <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+    <RegisterForm client:load />
+  </div>
+</Layout>
