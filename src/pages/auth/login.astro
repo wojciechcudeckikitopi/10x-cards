@@ -1,7 +1,7 @@
 ---
-import { LoginForm } from "../../components/auth/LoginForm";
-import { createSupabaseServerInstance } from "../../db/supabase.client";
-import Layout from "../../layouts/Layout.astro";
+import { LoginForm } from "@/components/auth/LoginForm";
+import { createSupabaseServerInstance } from "@/db/supabase.client";
+import Layout from "@/layouts/Layout.astro";
 
 // Check if user is already logged in
 const supabase = createSupabaseServerInstance({
@@ -9,9 +9,7 @@ const supabase = createSupabaseServerInstance({
   cookies: Astro.cookies,
 });
 
-const {
-  data: { session },
-} = await supabase.auth.getSession();
+const { data: { session } } = await supabase.auth.getSession();
 
 // Redirect to dashboard if already logged in
 if (session) {

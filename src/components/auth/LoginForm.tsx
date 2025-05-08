@@ -1,93 +1,92 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
-import { supabaseClient } from "@/db/supabase.client";
+import { useAuth } from "@/lib/context/auth.context";
+import { useNavigate } from "@/lib/hooks/useNavigate";
 import { useState } from "react";
-import { AuthForm } from "./AuthForm";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Redirect if already logged in
+  if (user) {
+    navigate("/dashboard");
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
-    if (!password) {
-      setError("Please enter your password");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
-      const { error: authError } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (authError) {
-        setError(authError.message);
-        return;
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to login");
       }
 
-      // Redirect will be handled by the middleware
-      window.location.href = "/dashboard";
+      // Successful login - redirect to dashboard
+      navigate("/dashboard");
     } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
+      setError(err instanceof Error ? err.message : "An error occurred during login");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <AuthForm title="Welcome back" description="Enter your email and password to sign in to your account" error={error}>
+    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+            {error}
+          </div>
+        )}
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             type="email"
-            placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
+            placeholder="Enter your email"
             required
           />
         </div>
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <a href="/password-recovery" className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">
-              Forgot password?
-            </a>
-          </div>
+          <Label htmlFor="password">Password</Label>
           <Input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
+            placeholder="Enter your password"
             required
           />
         </div>
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Signing in..." : "Sign in"}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isLoading}
+        >
+          {isLoading ? "Signing in..." : "Sign In"}
         </Button>
-        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Don&apos;t have an account?{" "}
-          <a href="/register" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
-            Sign up
-          </a>
-        </p>
       </form>
-    </AuthForm>
+    </div>
   );
 }
