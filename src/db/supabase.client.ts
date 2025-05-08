@@ -39,5 +39,3 @@ export const createSupabaseServerInstance = (context: { headers: Headers; cookie
 export const supabaseClient = createClient<Database>(supabaseUrl, supabaseKey);
 
 export type SupabaseClient = typeof supabaseClient;
-
-export const DEFAULT_USER_ID = "6129d8fc-386f-4c78-b0de-c4eb42e456f3";

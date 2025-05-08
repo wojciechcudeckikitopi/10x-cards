@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { DEFAULT_USER_ID } from "../../db/supabase.client";
+import { AuthenticationError, getCurrentUser } from "../../lib/auth";
 import { generateFlashcardsSchema, generationQuerySchema } from "../../lib/schemas/generation.schema";
 import { GenerationsService } from "../../lib/services/generations.service";
 
@@ -7,6 +7,7 @@ export const prerender = false;
 
 export const GET: APIRoute = async ({ request, locals }) => {
   try {
+    const user = await getCurrentUser({ locals } as any);
     const { supabase } = locals;
 
     // Parse and validate query parameters
@@ -29,7 +30,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
     // Fetch generations using service
     const generationsService = new GenerationsService(supabase);
-    const response = await generationsService.getGenerations(DEFAULT_USER_ID, validationResult.data);
+    const response = await generationsService.getGenerations(user.id, validationResult.data);
 
     return new Response(JSON.stringify(response), {
       status: 200,
@@ -37,6 +38,20 @@ export const GET: APIRoute = async ({ request, locals }) => {
     });
   } catch (error) {
     console.error("Error in GET /generations:", error);
+
+    if (error instanceof AuthenticationError) {
+      return new Response(
+        JSON.stringify({
+          error: "Authentication failed",
+          message: error.message,
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -46,6 +61,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    const user = await getCurrentUser({ locals } as any);
     const { supabase } = locals;
 
     // Parse and validate request body
@@ -67,7 +83,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Process the generation request
     const generationsService = new GenerationsService(supabase);
-    const response = await generationsService.createGeneration(DEFAULT_USER_ID, result.data.source_text);
+    const response = await generationsService.createGeneration(user.id, result.data.source_text);
 
     return new Response(JSON.stringify(response), {
       status: 201,
@@ -75,6 +91,20 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
   } catch (error) {
     console.error("Error processing generation request:", error);
+
+    if (error instanceof AuthenticationError) {
+      return new Response(
+        JSON.stringify({
+          error: "Authentication failed",
+          message: error.message,
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     return new Response(
       JSON.stringify({
         error: "Internal server error",
