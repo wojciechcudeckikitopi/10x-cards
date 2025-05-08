@@ -20,9 +20,28 @@ export function PasswordRecoveryForm() {
     }
 
     setIsLoading(true);
-    // Backend integration will be implemented later
-    setIsSuccess(true);
-    setIsLoading(false);
+
+    try {
+      const response = await fetch("/api/auth/password-recovery", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send password reset email");
+      }
+
+      setIsSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred while sending the reset email");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSuccess) {
@@ -68,7 +87,7 @@ export function PasswordRecoveryForm() {
         </Button>
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
           Remember your password?{" "}
-          <a href="/login" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+          <a href="/auth/login" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
             Sign in
           </a>
         </p>

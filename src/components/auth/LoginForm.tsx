@@ -92,6 +92,12 @@ export function LoginForm() {
             Create account
           </a>
         </p>
+        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+          Forgot your password?{" "}
+          <a href="/auth/password-recovery" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+            Reset password
+          </a>
+        </p>
       </form>
     </div>
   );
