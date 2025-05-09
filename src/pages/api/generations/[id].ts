@@ -1,5 +1,5 @@
-import { DEFAULT_USER_ID } from "@/db/supabase.client";
 import type { APIRoute } from "astro";
+import { AuthenticationError, getCurrentUser } from "../../../lib/auth";
 import { generationIdSchema } from "../../../lib/schemas/generation.schema";
 import { GenerationsService } from "../../../lib/services/generations.service";
 
@@ -8,6 +8,8 @@ export const prerender = false;
 
 export const GET: APIRoute = async ({ params, locals }) => {
   try {
+    const user = await getCurrentUser({ locals } as any);
+
     // Validate the generation ID
     const result = generationIdSchema.safeParse(params);
     if (!result.success) {
@@ -26,7 +28,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
     const generationsService = new GenerationsService(supabase);
 
     // Fetch generation details
-    const generationDetails = await generationsService.getGenerationDetails(result.data.id, DEFAULT_USER_ID);
+    const generationDetails = await generationsService.getGenerationDetails(result.data.id, user.id);
 
     if (!generationDetails) {
       return new Response(
@@ -46,6 +48,20 @@ export const GET: APIRoute = async ({ params, locals }) => {
     });
   } catch (error) {
     console.error("Error fetching generation:", error);
+
+    if (error instanceof AuthenticationError) {
+      return new Response(
+        JSON.stringify({
+          error: "Authentication failed",
+          message: error.message,
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     return new Response(
       JSON.stringify({
         error: "Internal server error",

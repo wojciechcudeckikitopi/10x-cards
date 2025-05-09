@@ -1,5 +1,5 @@
-import { DEFAULT_USER_ID } from "@/db/supabase.client";
 import type { APIRoute } from "astro";
+import { AuthenticationError, getCurrentUser } from "../../../lib/auth";
 import { flashcardIdSchema, updateFlashcardSchema } from "../../../lib/schemas/flashcard.schema";
 import { FlashcardsService } from "../../../lib/services/flashcards.service";
 import type { FlashcardDTO } from "../../../types";
@@ -9,6 +9,8 @@ export const prerender = false;
 
 export const GET: APIRoute = async ({ params, locals }) => {
   try {
+    const user = await getCurrentUser({ locals } as any);
+
     // Step 1: Validate the id parameter
     const result = flashcardIdSchema.safeParse(params);
     if (!result.success) {
@@ -27,12 +29,11 @@ export const GET: APIRoute = async ({ params, locals }) => {
     const { id } = result.data;
     const { supabase } = locals;
 
-    // Query the flashcard using DEFAULT_USER_ID
     const { data: flashcard, error: dbError } = await supabase
       .from("flashcards")
       .select("*")
       .eq("id", id.toString())
-      .eq("user_id", DEFAULT_USER_ID)
+      .eq("user_id", user.id)
       .single();
 
     if (dbError || !flashcard) {
@@ -60,6 +61,20 @@ export const GET: APIRoute = async ({ params, locals }) => {
     });
   } catch (error) {
     console.error("Error fetching flashcard:", error);
+
+    if (error instanceof AuthenticationError) {
+      return new Response(
+        JSON.stringify({
+          error: "Authentication failed",
+          message: error.message,
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -69,6 +84,8 @@ export const GET: APIRoute = async ({ params, locals }) => {
 
 export const PUT: APIRoute = async ({ params, request, locals }) => {
   try {
+    const user = await getCurrentUser({ locals } as any);
+
     // Step 1: Validate the id parameter
     const idResult = flashcardIdSchema.safeParse(params);
     if (!idResult.success) {
@@ -109,7 +126,7 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
       .from("flashcards")
       .select("*")
       .eq("id", id)
-      .eq("user_id", DEFAULT_USER_ID)
+      .eq("user_id", user.id)
       .single();
 
     if (fetchError || !existingFlashcard) {
@@ -124,7 +141,7 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
       .from("flashcards")
       .update(updateResult.data)
       .eq("id", id)
-      .eq("user_id", DEFAULT_USER_ID)
+      .eq("user_id", user.id)
       .select()
       .single();
 
@@ -154,6 +171,20 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
     });
   } catch (error) {
     console.error("Error updating flashcard:", error);
+
+    if (error instanceof AuthenticationError) {
+      return new Response(
+        JSON.stringify({
+          error: "Authentication failed",
+          message: error.message,
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -163,6 +194,8 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
 
 export const DELETE: APIRoute = async ({ params, locals }) => {
   try {
+    const user = await getCurrentUser({ locals } as any);
+
     // Step 1: Validate the id parameter
     const result = flashcardIdSchema.safeParse(params);
     if (!result.success) {
@@ -186,7 +219,7 @@ export const DELETE: APIRoute = async ({ params, locals }) => {
       .from("flashcards")
       .select("*")
       .eq("id", id)
-      .eq("user_id", DEFAULT_USER_ID)
+      .eq("user_id", user.id)
       .single();
 
     if (fetchError || !existingFlashcard) {
@@ -198,14 +231,25 @@ export const DELETE: APIRoute = async ({ params, locals }) => {
 
     // Step 3: Delete the flashcard
     const flashcardsService = new FlashcardsService(supabase);
-    await flashcardsService.deleteFlashcard(DEFAULT_USER_ID, id);
+    await flashcardsService.deleteFlashcard(user.id, id);
 
-    return new Response(JSON.stringify({ message: "Flashcard deleted successfully" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(null, { status: 204 });
   } catch (error) {
     console.error("Error deleting flashcard:", error);
+
+    if (error instanceof AuthenticationError) {
+      return new Response(
+        JSON.stringify({
+          error: "Authentication failed",
+          message: error.message,
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
