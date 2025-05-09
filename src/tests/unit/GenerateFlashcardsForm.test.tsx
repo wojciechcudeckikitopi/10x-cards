@@ -25,6 +25,9 @@ const mockFlashcardResponse = {
   ]
 };
 
+const validMinText = "a".repeat(1000);
+const validMaxText = "a".repeat(10000);
+
 describe('GenerateFlashcardsForm', () => {
   beforeEach(() => {
     // Reset wszystkich mocków przed każdym testem
@@ -39,7 +42,7 @@ describe('GenerateFlashcardsForm', () => {
       const textarea = screen.getByPlaceholderText(/Enter your text here/i);
       const generateButton = screen.getByText(/Generate Flashcards/i);
 
-      await userEvent.type(textarea, 'a'.repeat(999));
+      await userEvent.type(textarea, validMinText.slice(0, 999));
 
       expect(generateButton).toBeDisabled();
       expect(screen.getByText(/999 characters/)).toBeInTheDocument();
@@ -50,7 +53,7 @@ describe('GenerateFlashcardsForm', () => {
       render(<GenerateFlashcardsForm />);
       const textarea = screen.getByPlaceholderText(/Enter your text here/i);
       
-      fireEvent.change(textarea, { target: { value: 'a'.repeat(10001) } });
+      fireEvent.change(textarea, { target: { value: validMaxText+ 'a' } });
 
       expect(screen.getByText(/10001 characters/)).toBeInTheDocument();
       expect(screen.getByText(/Text must be between 1,000 and 10,000 characters/)).toBeInTheDocument();
@@ -61,7 +64,7 @@ describe('GenerateFlashcardsForm', () => {
       const textarea = screen.getByPlaceholderText(/Enter your text here/i);
       const generateButton = screen.getByText(/Generate Flashcards/i);
 
-      await userEvent.type(textarea, 'a'.repeat(1000));
+      await userEvent.type(textarea, validMinText);
 
       expect(generateButton).not.toBeDisabled();
       expect(screen.getByText(/1000 characters/)).toBeInTheDocument();
@@ -86,7 +89,7 @@ describe('GenerateFlashcardsForm', () => {
       const textarea = screen.getByPlaceholderText(/Enter your text here/i);
       const generateButton = screen.getByText(/Generate Flashcards/i);
 
-      await userEvent.type(textarea, 'a'.repeat(1000));
+      await userEvent.type(textarea, validMinText);
       await userEvent.click(generateButton);
 
       // Sprawdzenie czy loader się pojawił
@@ -100,7 +103,7 @@ describe('GenerateFlashcardsForm', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ source_text: 'a'.repeat(1000) }),
+        body: JSON.stringify({ source_text: validMinText }),
       });
 
       // Sprawdzenie czy fiszki zostały wyrenderowane
@@ -118,7 +121,7 @@ describe('GenerateFlashcardsForm', () => {
       const textarea = screen.getByPlaceholderText(/Enter your text here/i);
       const generateButton = screen.getByText(/Generate Flashcards/i);
 
-      await userEvent.type(textarea, 'a'.repeat(1000));
+      await userEvent.type(textarea, validMinText);
       await userEvent.click(generateButton);
 
       await waitFor(() => {
@@ -137,7 +140,7 @@ describe('GenerateFlashcardsForm', () => {
       render(<GenerateFlashcardsForm />);
       
       // Generowanie fiszek
-      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), 'a'.repeat(1000));
+      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), validMinText);
       await userEvent.click(screen.getByText(/Generate Flashcards/i));
 
       // Oczekiwanie na wyrenderowanie fiszek
@@ -161,7 +164,7 @@ describe('GenerateFlashcardsForm', () => {
 
       render(<GenerateFlashcardsForm />);
       
-      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), 'a'.repeat(1000));
+      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), validMinText);
       await userEvent.click(screen.getByText(/Generate Flashcards/i));
 
       await waitFor(() => {
@@ -185,7 +188,7 @@ describe('GenerateFlashcardsForm', () => {
       render(<GenerateFlashcardsForm />);
       
       // Generowanie i oczekiwanie na fiszki
-      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), 'a'.repeat(1000));
+      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), validMinText);
       await userEvent.click(screen.getByText(/Generate Flashcards/i));
 
       await waitFor(() => {
@@ -210,7 +213,7 @@ describe('GenerateFlashcardsForm', () => {
       render(<GenerateFlashcardsForm />);
       
       // Setup
-      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), 'a'.repeat(1000));
+      await userEvent.type(screen.getByPlaceholderText(/Enter your text here/i), validMinText);
       await userEvent.click(screen.getByText(/Generate Flashcards/i));
       await waitFor(() => {
         expect(screen.getByText('Test Front')).toBeInTheDocument();
