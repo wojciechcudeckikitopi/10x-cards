@@ -22,4 +22,9 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     exclude: ['node_modules/**', 'dist/**', '.astro/**', 'src/tests/e2e/**'],
   },
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
 }); 

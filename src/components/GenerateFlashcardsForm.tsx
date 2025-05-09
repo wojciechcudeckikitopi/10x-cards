@@ -1,5 +1,5 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
+import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Feedback";
 import { LoadingIndicator } from "@/components/ui/LoadingIndicator";
 import { Textarea } from "@/components/ui/textarea";
