@@ -52,6 +52,13 @@ export class DashboardPage {
   async expectActionsDisabled() {
     const buttons = this.page.getByTestId("dashboard-actions").getByRole("button");
     await expect(buttons).toHaveCount(3);
+
+    // Wait for loading state to be visible first
+    await this.page.waitForSelector('[data-testid="dashboard-actions"] button[disabled]', {
+      state: "attached",
+      timeout: 2000,
+    });
+
     for (const button of await buttons.all()) {
       await expect(button).toBeDisabled();
     }

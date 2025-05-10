@@ -33,7 +33,14 @@ export function AuthForm<T extends FieldValues>({
           </Alert>
         )}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              form.handleSubmit(onSubmit)(event);
+            }}
+            className="space-y-4"
+            data-testid="auth-form"
+          >
             {children}
           </form>
         </Form>
