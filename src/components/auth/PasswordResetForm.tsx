@@ -1,54 +1,45 @@
 import { Button } from "@/components/ui/Button";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/label";
+import { useAuth } from "@/lib/hooks/useAuth";
+import { passwordResetSchema } from "@/lib/validations/auth";
+import type { PasswordResetFormData } from "@/types/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { AuthForm } from "./AuthForm";
 
 interface PasswordResetFormProps {
-  token: string; // Will be used in the backend integration
+  token: string;
 }
 
 export function PasswordResetForm({ token }: PasswordResetFormProps) {
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const form = useForm<PasswordResetFormData>({
+    resolver: zodResolver(passwordResetSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const { resetPassword, isLoading, error } = useAuth();
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    if (newPassword.length < 8) {
-      setError("Password must be at least 8 characters long");
-      return;
-    }
-
-    if (newPassword !== confirmNewPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      // Backend integration will validate the token and update the password
-      console.log("Reset token:", token);
-      setIsSuccess(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to reset password. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSubmit = async (data: PasswordResetFormData) => {
+    await resetPassword(token, data);
+    setIsSuccess(true);
   };
 
   if (isSuccess) {
     return (
       <AuthForm
+        form={form}
         title="Password reset successful"
         description="Your password has been reset successfully. You can now sign in with your new password."
         error={null}
+        onSubmit={handleSubmit}
       >
-        <a href="/login" className="block">
+        <a href="/auth/login" className="block">
           <Button className="w-full">Sign in</Button>
         </a>
       </AuthForm>
@@ -56,36 +47,52 @@ export function PasswordResetForm({ token }: PasswordResetFormProps) {
   }
 
   return (
-    <AuthForm title="Reset your password" description="Enter your new password below." error={error}>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="newPassword">New Password</Label>
-          <Input
-            id="newPassword"
-            type="password"
-            placeholder="Min. 8 characters"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            disabled={isLoading}
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
-          <Input
-            id="confirmNewPassword"
-            type="password"
-            placeholder="Re-enter your new password"
-            value={confirmNewPassword}
-            onChange={(e) => setConfirmNewPassword(e.target.value)}
-            disabled={isLoading}
-            required
-          />
-        </div>
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Resetting password..." : "Reset password"}
-        </Button>
-      </form>
+    <AuthForm
+      form={form}
+      title="Reset your password"
+      description="Enter your new password below."
+      error={error}
+      onSubmit={handleSubmit}
+    >
+      <FormField
+        control={form.control}
+        name="password"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>New Password</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                type="password"
+                placeholder="Min. 8 characters"
+                data-testid="password-reset-password-input"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="confirmPassword"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Confirm New Password</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                type="password"
+                placeholder="Re-enter your new password"
+                data-testid="password-reset-confirm-password-input"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <Button type="submit" className="w-full" disabled={isLoading} data-testid="password-reset-submit-button">
+        {isLoading ? "Resetting password..." : "Reset password"}
+      </Button>
     </AuthForm>
   );
 }
