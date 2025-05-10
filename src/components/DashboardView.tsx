@@ -55,7 +55,7 @@ export default function DashboardView() {
       ) : (
         <>
           <StatsCards stats={stats} isLoading={isLoading} />
-          <ActionButtons />
+          <ActionButtons isLoading={isLoading} />
         </>
       )}
     </div>

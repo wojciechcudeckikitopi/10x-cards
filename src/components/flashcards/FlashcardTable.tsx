@@ -1,5 +1,5 @@
 import { type FlashcardDTO } from "../../types";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { FlashcardActions } from "./FlashcardActions";
 
 interface FlashcardTableProps {
@@ -23,7 +23,7 @@ export function FlashcardTable({ flashcards, onEdit, onDelete }: FlashcardTableP
   };
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border" data-testid="flashcard-table">
       <Table>
         <TableHeader>
           <TableRow>
@@ -36,13 +36,13 @@ export function FlashcardTable({ flashcards, onEdit, onDelete }: FlashcardTableP
         <TableBody>
           {flashcards.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center h-24 text-muted-foreground">
+              <TableCell colSpan={4} className="text-center h-24 text-muted-foreground" data-testid="no-flashcards-message">
                 No flashcards found
               </TableCell>
             </TableRow>
           ) : (
             flashcards.map((flashcard) => (
-              <TableRow key={flashcard.id}>
+              <TableRow key={flashcard.id} data-testid={`flashcard-row-${flashcard.id}`}>
                 <TableCell>{truncateText(flashcard.front)}</TableCell>
                 <TableCell>
                   <span
@@ -53,6 +53,7 @@ export function FlashcardTable({ flashcards, onEdit, onDelete }: FlashcardTableP
                           ? "text-destructive"
                           : "text-muted-foreground"
                     }`}
+                    data-testid={`flashcard-status-${flashcard.id}`}
                   >
                     {flashcard.status}
                   </span>

@@ -145,7 +145,7 @@ export function FlashcardListContainer() {
 
   if (state.isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
+      <div className="flex justify-center items-center min-h-[400px]" data-testid="flashcards-loading">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
@@ -153,11 +153,12 @@ export function FlashcardListContainer() {
 
   if (state.error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4" data-testid="flashcards-error">
         <p className="text-destructive">{state.error}</p>
         <button
           onClick={() => fetchFlashcards()}
           className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          data-testid="flashcards-retry-button"
         >
           Try Again
         </button>
@@ -166,7 +167,7 @@ export function FlashcardListContainer() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6" data-testid="flashcards-container">
       <FlashcardTable flashcards={state.flashcards} onEdit={handleEdit} onDelete={handleDelete} />
       {state.flashcards.length > 0 && (
         <PaginationControls pagination={state.pagination} onPageChange={handlePageChange} />

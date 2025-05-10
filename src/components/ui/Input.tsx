@@ -5,6 +5,7 @@ import type { InteractiveProps, Size } from "./types";
 export interface InputProps extends InteractiveProps {
   type?: "text" | "password" | "email" | "number" | "tel" | "url" | "search";
   size?: Size;
+  name?: string;
   placeholder?: string;
   value?: string | number;
   defaultValue?: string | number;
@@ -31,6 +32,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       className,
       type = "text",
       size = "md",
+      name,
       placeholder,
       value,
       defaultValue,
@@ -62,6 +64,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           type={type}
+          name={name}
           className={cn(
             baseClasses,
             sizeClasses[size],
