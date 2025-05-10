@@ -3,11 +3,10 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "@/lib/hooks/useNavigate";
 import { useAuthStore } from "@/lib/stores/auth.store";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -21,8 +20,18 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formRef.current) {
+      setError("Form submission error");
+      return;
+    }
+
     setError(null);
     setIsLoading(true);
+
+    const formData = new FormData(formRef.current);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
       const response = await fetch("/api/auth/login", {
@@ -49,11 +58,14 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div
+      className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800"
+      data-testid="login-form"
+    >
       <h1 className="text-2xl font-bold text-center mb-6 dark:text-white">Sign In</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md dark:bg-red-900/50">
+          <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md dark:bg-red-900/50" data-testid="login-error">
             {error}
           </div>
         )}
@@ -61,29 +73,25 @@ export function LoginForm() {
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
+            name="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             required
+            data-testid="login-email-input"
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
+            name="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             required
+            data-testid="login-password-input"
           />
         </div>
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isLoading}
-        >
+        <Button type="submit" className="w-full" disabled={isLoading} data-testid="login-submit-button">
           {isLoading ? "Signing in..." : "Sign In"}
         </Button>
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
