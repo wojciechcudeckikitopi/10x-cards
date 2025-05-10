@@ -1,14 +1,25 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/Alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Form } from "@/components/ui/Form";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 
-interface AuthFormProps {
+interface AuthFormProps<T extends FieldValues> {
+  form: UseFormReturn<T>;
   title: string;
   description: string;
   error?: string | null;
+  onSubmit: (data: T) => Promise<void>;
   children: React.ReactNode;
 }
 
-export function AuthForm({ title, description, error, children }: AuthFormProps) {
+export function AuthForm<T extends FieldValues>({
+  form,
+  title,
+  description,
+  error,
+  onSubmit,
+  children,
+}: AuthFormProps<T>) {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -21,7 +32,18 @@ export function AuthForm({ title, description, error, children }: AuthFormProps)
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-        {children}
+        <Form {...form}>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              form.handleSubmit(onSubmit)(event);
+            }}
+            className="space-y-4"
+            data-testid="auth-form"
+          >
+            {children}
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

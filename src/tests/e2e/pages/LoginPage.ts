@@ -10,7 +10,7 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.form = page.getByTestId("login-form");
+    this.form = page.getByTestId("auth-form");
     this.emailInput = page.getByTestId("login-email-input");
     this.passwordInput = page.getByTestId("login-password-input");
     this.submitButton = page.getByTestId("login-submit-button");
@@ -22,9 +22,9 @@ export class LoginPage {
   }
 
   async login(email: string, password: string) {
+    await this.page.waitForTimeout(2000);
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
-    await this.page.waitForTimeout(2000);
     await this.submitButton.click();
   }
 

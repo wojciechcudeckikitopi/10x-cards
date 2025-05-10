@@ -26,7 +26,7 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
     headers: request.headers,
   });
 
-  locals.supabase = supabase;  
+  locals.supabase = supabase;
 
   // IMPORTANT: Always get user session first before any other operations
   const {
