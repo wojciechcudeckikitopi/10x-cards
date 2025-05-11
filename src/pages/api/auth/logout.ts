@@ -1,11 +1,11 @@
 import { createSupabaseServerInstance } from "@/db/supabase.client";
-import type { APIRoute } from 'astro';
+import type { APIRoute } from "astro";
 
 // Define the User type to match the one used in locals
-type User = {
+interface User {
   id: string;
   email: string | null;
-};
+}
 
 // Extend Astro.locals type
 declare global {
@@ -35,8 +35,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
   return new Response(JSON.stringify({ success: true }), {
     status: 200,
     headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store, no-cache, must-revalidate",
     },
   });
-}; 
+};

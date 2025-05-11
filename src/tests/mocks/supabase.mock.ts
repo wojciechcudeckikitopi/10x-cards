@@ -1,5 +1,5 @@
-import { vi } from 'vitest';
-import type { SupabaseClient } from '../../db/supabase.client';
+import { vi } from "vitest";
+import type { SupabaseClient } from "../../db/supabase.client";
 
 // Create a mock Supabase client for testing
 export const createMockSupabaseClient = () => {

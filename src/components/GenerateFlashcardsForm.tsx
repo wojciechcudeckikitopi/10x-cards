@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Feedback";
 import { LoadingIndicator } from "@/components/ui/LoadingIndicator";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/ui/Textarea";
 import type {
   CreateFlashcardsCommand,
   FlashcardProposalDTO,

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import type { ProposedFlashcardViewModel } from "./GenerateFlashcardsForm";
 import { ProposedFlashcardItem } from "./ProposedFlashcardItem";
 

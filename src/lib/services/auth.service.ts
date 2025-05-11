@@ -1,7 +1,16 @@
-import type { AuthResponse, LoginFormData, PasswordRecoveryFormData, PasswordResetFormData, RegisterFormData } from "@/types/auth";
+import type {
+  AuthResponse,
+  LoginFormData,
+  PasswordRecoveryFormData,
+  PasswordResetFormData,
+  RegisterFormData,
+} from "@/types/auth";
 
 class ApiError extends Error {
-  constructor(message: string, public code?: string) {
+  constructor(
+    message: string,
+    public code?: string
+  ) {
     super(message);
     this.name = "ApiError";
   }
@@ -10,11 +19,11 @@ class ApiError extends Error {
 export class AuthService {
   private static async handleResponse<T>(response: Response): Promise<T> {
     const data = await response.json();
-    
+
     if (!response.ok) {
       throw new ApiError(data.error || "An error occurred", data.code);
     }
-    
+
     return data;
   }
 
@@ -24,7 +33,7 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
+
     return this.handleResponse<AuthResponse>(response);
   }
 
@@ -34,7 +43,7 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
+
     return this.handleResponse<AuthResponse>(response);
   }
 
@@ -44,7 +53,7 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
+
     return this.handleResponse<void>(response);
   }
 
@@ -54,7 +63,7 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
+
     return this.handleResponse<void>(response);
   }
 
@@ -62,7 +71,7 @@ export class AuthService {
     const response = await fetch("/api/auth/logout", {
       method: "POST",
     });
-    
+
     return this.handleResponse<void>(response);
   }
 }

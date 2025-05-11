@@ -1,5 +1,5 @@
 import { type FlashcardDTO } from "../../types";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/Table";
 import { FlashcardActions } from "./FlashcardActions";
 
 interface FlashcardTableProps {
@@ -36,7 +36,11 @@ export function FlashcardTable({ flashcards, onEdit, onDelete }: FlashcardTableP
         <TableBody>
           {flashcards.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center h-24 text-muted-foreground" data-testid="no-flashcards-message">
+              <TableCell
+                colSpan={4}
+                className="text-center h-24 text-muted-foreground"
+                data-testid="no-flashcards-message"
+              >
                 No flashcards found
               </TableCell>
             </TableRow>

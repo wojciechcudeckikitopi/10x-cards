@@ -28,10 +28,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Create flashcards using service
     const flashcardsService = new FlashcardsService(locals.supabase);
-    const createdFlashcards = await flashcardsService.createFlashcards(
-      user.id,
-      validationResult.data.flashcards
-    );
+    const createdFlashcards = await flashcardsService.createFlashcards(user.id, validationResult.data.flashcards);
 
     return new Response(JSON.stringify(createdFlashcards), {
       status: 201,
@@ -39,7 +36,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
   } catch (error) {
     console.error("Error creating flashcards:", error);
-    
+
     if (error instanceof AuthenticationError) {
       return new Response(
         JSON.stringify({
