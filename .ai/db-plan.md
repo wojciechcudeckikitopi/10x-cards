@@ -3,6 +3,7 @@
 ## 1. Tabele
 
 ### 1.1. Users
+
 Ta tabela jest zarządzana przez Supabase Auth.
 
 - **id**: UUID PRIMARY KEY
@@ -14,6 +15,7 @@ Ta tabela jest zarządzana przez Supabase Auth.
 ---
 
 ### 1.2. Flashcards
+
 Tabela fiszek zawiera dane fiszek z ograniczeniami na długość treści oraz typy ENUM dla źródła i statusu.
 
 - **id**: BIGSERIAL PRIMARY KEY
@@ -36,6 +38,7 @@ CREATE TYPE flashcard_status AS ENUM ('pending', 'accepted', 'rejected');
 ---
 
 ### 1.3. Generations
+
 Tabela przechowująca informacje o wygenerowanych fiszkach, wraz z danymi źródłowymi oraz statystykami.
 
 - **id**: BIGSERIAL PRIMARY KEY
@@ -53,6 +56,7 @@ Tabela przechowująca informacje o wygenerowanych fiszkach, wraz z danymi źród
 ---
 
 ### 1.4. Generation Errors
+
 Tabela błędów generowania fiszek zawiera informacje o problemach podczas generacji.
 
 - **id**: BIGSERIAL PRIMARY KEY
@@ -63,7 +67,6 @@ Tabela błędów generowania fiszek zawiera informacje o problemach podczas gene
 - **llm_model**: TEXT NOT NULL
 - **created_at**: TIMESTAMPTZ NOT NULL DEFAULT now()
 
-
 ## 2. Relacje między tabelami
 
 - Jeden użytkownik (users) może posiadać wiele rekordów w tabelach:
@@ -71,12 +74,10 @@ Tabela błędów generowania fiszek zawiera informacje o problemach podczas gene
   - **Generations** (relacja 1:N poprzez `user_id`)
   - **Generation Errors** (relacja 1:N poprzez `user_id`)
 
-
 ## 3. Indeksy
 
 - Indeks na kolumnie `user_id` w tabelach: Flashcards, Generations, Generation Errors.
 - Indeks na kolumnie `status` w tabeli Flashcards dla optymalizacji zapytań filtrowania.
-
 
 ## 4. Zasady PostgreSQL (RLS)
 

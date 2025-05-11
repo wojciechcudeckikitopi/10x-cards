@@ -1,9 +1,11 @@
 # API Endpoint Implementation Plan: GET /generation-errors
 
 ## 1. Przegląd punktu końcowego
+
 Opis: Endpoint umożliwia pobieranie rekordów błędów generacji dla uwierzytelnionego użytkownika. Użytkownik otrzymuje listę wpisów dotyczących problemów, które wystąpiły podczas generacji fiszek.
 
 ## 2. Szczegóły żądania
+
 - **Metoda HTTP:** GET
 - **Struktura URL:** /generation-errors
 - **Parametry zapytania:**
@@ -12,13 +14,16 @@ Opis: Endpoint umożliwia pobieranie rekordów błędów generacji dla uwierzyte
 - **Request Body:** Brak
 
 ## 3. Wykorzystywane typy
+
 - **GenerationErrorDTO:** Typ reprezentujący rekord błędu generacji (z wyłączeniem pola `user_id`). Zdefiniowany w `src/types.ts`.
 - **Pagination oraz PaginatedResponse:** Typy używane do strukturyzacji odpowiedzi z metadanymi paginacji.
 
 ## 4. Szczegóły odpowiedzi
+
 - **Kod statusu 200:** Pomyślny odczyt rekordu
 
 **Przykładowa odpowiedź:**
+
 ```json
 {
   "data": [
@@ -41,11 +46,13 @@ Opis: Endpoint umożliwia pobieranie rekordów błędów generacji dla uwierzyte
 ```
 
 **Błędy:**
+
 - 401 Unauthorized – Użytkownik nie jest uwierzytelniony
 - 400 Bad Request – Nieprawidłowe parametry zapytania
 - 500 Internal Server Error – Błąd po stronie serwera
 
 ## 5. Przepływ danych
+
 1. Klient wysyła zapytanie GET na `/generation-errors` z odpowiednimi parametrami `page` i `limit`.
 2. Middleware autoryzacyjne weryfikuje tożsamość użytkownika i przekazuje `user_id` do warstwy serwisowej.
 3. Warstwa serwisu wywołuje zapytanie do bazy danych, filtrując rekordy w tabeli `generation_errors` wg `user_id` i stosując paginację (OFFSET, LIMIT).
@@ -53,23 +60,27 @@ Opis: Endpoint umożliwia pobieranie rekordów błędów generacji dla uwierzyte
 5. Odpowiedź zawiera listę błędów oraz metadane paginacji i jest wysyłana do klienta.
 
 ## 6. Względy bezpieczeństwa
+
 - **Autoryzacja:** Endpoint dostępny tylko dla uwierzytelnionych użytkowników. Weryfikacja odbywa się na poziomie middleware.
 - **Walidacja danych wejściowych:** Parametry `page` i `limit` muszą być pozytywnymi liczbami całkowitymi, weryfikacja przy pomocy np. Zod.
 - **Ochrona danych:** Upewnić się, że użytkownik widzi tylko swoje rekordy, filtrując dane wg `user_id`.
 - **SQL Injection:** Użycie przygotowanych zapytań lub ORM zapobiega atakom SQL Injection.
 
 ## 7. Obsługa błędów
+
 - **401 Unauthorized:** Gdy użytkownik nie jest autoryzowany.
 - **400 Bad Request:** Gdy parametry zapytania są nieprawidłowe (np. nie liczby, liczby mniejsze lub równe 0).
 - **500 Internal Server Error:** W przypadku błędów po stronie bazy danych lub innych nieoczekiwanych wyjątków.
 - **Logowanie błędów:** Każdy błąd powinien być odpowiednio zalogowany w systemie logowania aplikacji.
 
 ## 8. Rozważania dotyczące wydajności
+
 - **Paginacja:** Użycie LIMIT i OFFSET dla optymalnego pobierania danych.
 - **Indeksowanie:** Zapewnienie indeksów na polach `user_id` oraz `created_at` dla przyspieszenia zapytań.
 - **Cache:** Rozważenie pamięci podręcznej, jeśli rekordy błędów generacji są często odczytywane, ale rzadko modyfikowane.
 
 ## 9. Kroki implementacji
+
 1. **Stworzenie endpointu:** Utworzyć plik API endpointu (np. `./src/pages/api/generation-errors.ts`) lub zgodnie z obowiązującą strukturą projektu.
 2. **Autoryzacja:** Zaimplementować middleware uwierzytelniające, przetwarzające nagłówki i wERYfikujące token, a następnie przekazujące `user_id` do kontekstu.
 3. **Walidacja parametrów:** Użyć Zod do walidacji parametrów `page` i `limit`.

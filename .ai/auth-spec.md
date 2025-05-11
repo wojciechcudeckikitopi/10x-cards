@@ -3,18 +3,21 @@
 ## 1. ARCHITEKTURA INTERFEJSU UŻYTKOWNIKA
 
 ### 1.1 Strony i nawigacja
+
 - `/register` (rejestracja)
 - `/login` (logowanie)
 - `/password-recovery` (odzyskiwanie hasła)
 - `/password-reset` (reset hasła po otrzymanym mailu, token w query parametru `access_token`)
 
 ### 1.2 Layout i nawigacja
+
 - Rozszerzyć `src/layouts/Layout.astro` oraz `src/components/TopBar.tsx` (TopBar):
   - Dla niezalogowanych: przycisk **Zaloguj się** kierujący do `/login`.
   - Dla zalogowanych: przycisk **Wyloguj się** wywołujący `POST /api/auth/logout` i przekierowujący na `/login`.
   - Reactive'na obsługa stanu sesji (useSession) dla dynamicznej zmiany przycisków.
 
 ### 1.3 Komponenty React
+
 - `src/components/AuthForm/RegisterForm.tsx`:
   - Pola: **email**, **password**, **confirmPassword**.
   - Client-side validation: email regex, min. 8 znaków, zgodność haseł.
@@ -32,6 +35,7 @@
   - Obsługa tokena z query parametru `access_token` w URL oraz błędów nieważnego/wygaśniętego tokena.
 
 ### 1.4 Rozdzielenie odpowiedzialności
+
 - **Strony Astro**:
   - SSR, wczytanie layoutu, przekazanie props (np. token z URL) do React.
 - **Komponenty React**:
@@ -39,6 +43,7 @@
   - Zarządzanie stanem błędów i loading.
 
 ### 1.5 Walidacja i komunikaty
+
 - **Client-side**:
   - Email: regex `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`.
   - Hasło: min. 8 znaków.
@@ -54,6 +59,7 @@
 ## 2. LOGIKA BACKENDOWA
 
 ### 2.1 Struktura endpointów API
+
 - `src/pages/api/auth/register.ts`
 - `src/pages/api/auth/login.ts`
 - `src/pages/api/auth/logout.ts`
@@ -61,16 +67,19 @@
 - `src/pages/api/auth/password-reset.ts`
 
 ### 2.2 Modele i dane
+
 - Wykorzystanie tabeli `auth.users` w Supabase.
 - Sesje, tokeny resetu i mechanizmy auth zarządzane przez Supabase.
 
 ### 2.3 Mechanizm walidacji danych wejściowych
+
 - Każdy endpoint sprawdza:
   - Obecność wymaganych pól.
   - Format email i długość haseł.
 - Zastosowanie guard clauses i wczesnych returnów.
 
 ### 2.4 Obsługa wyjątków
+
 - Przechwytywanie błędów z Supabase (`error` z `supabase.auth`).
 - Zwracanie ujednoliconego JSON: `{ status: 'error' | 'success', message, data? }`.
 - Kody HTTP:
@@ -80,6 +89,7 @@
   - **500** – błędy serwera.
 
 ### 2.5 Middleware i SSR
+
 - `src/middleware/index.ts`:
   - Sprawdzanie ciasteczek sesji Supabase.
   - Chroni ścieżki: `/dashboard`, `/study`, `/flashcards`, `/settings`, `/`.
@@ -91,12 +101,14 @@
 ## 3. SYSTEM AUTENTYKACJI
 
 ### 3.1 Konfiguracja Supabase
+
 - `src/db/supabaseClient.ts`:
   - `createClient(SUPABASE_URL, SUPABASE_ANON_KEY)` – client-side.
 - `src/db/supabaseAdmin.ts`:
   - `createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)` – serwer.
 
 ### 3.2 Operacje autoryzacji
+
 - **Rejestracja**: `supabaseClient.auth.signUp({ email, password })`; brak wymogu weryfikacji email w tej wersji.
 - **Logowanie**: `supabaseClient.auth.signInWithPassword({ email, password })`, ustawienie cookie.
 - **Wylogowanie**: `supabaseClient.auth.signOut()`, usunięcie cookie.
@@ -104,6 +116,7 @@
 - **Reset hasła**: przy wejściu na `/password-reset`, Supabase Client wykryje parametr `access_token` w URL, ustawi sesję i wywoła `supabaseClient.auth.updateUser({ password: newPassword })`; w razie nieważnego/wygaśniętego tokena zwróci HTTP 401.
 
 ### 3.3 Integracja z komponentami
+
 - React-formularze wywołują powyższe metody.
 - Po sukcesie: rejestracja/logowanie -> `/dashboard`; reset hasła -> `/login`.
 

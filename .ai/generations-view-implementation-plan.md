@@ -1,13 +1,15 @@
 # API Endpoint Implementation Plan: POST /generations
 
 ## 1. Przegląd punktu końcowego
+
 Endpoint służy do inicjacji procesu generowania fiszek przez AI. Użytkownik przesyła tekst źródłowy, który zostanie poddany walidacji oraz przetworzony do utworzenia rekordu generacji w bazie danych. Początkowo fiszki otrzymują status "pending". Proces może być rozwinięty o asynchroniczne wywołanie usługi AI, a ewentualne błędy są logowane do tabeli błędów.
 
 ## 2. Szczegóły żądania
+
 - **Metoda HTTP:** POST
 - **Endpoint:** /generations
 - **Parametry:**
-  - Wymagane: 
+  - Wymagane:
     - `source_text` (ciąg znaków o długości od 1000 do 10000 znaków)
   - Opcjonalne: brak
 - **Request Body:**
@@ -18,6 +20,7 @@ Endpoint służy do inicjacji procesu generowania fiszek przez AI. Użytkownik p
   ```
 
 ## 3. Wykorzystywane typy
+
 - **Command Model:** `GenerateFlashcardsCommand` (wymaga właściwości `source_text`)
 - **DTO dla odpowiedzi:** `GenerationCreateResponseDTO` zawierający:
   - `generation_id`: string
@@ -28,6 +31,7 @@ Endpoint służy do inicjacji procesu generowania fiszek przez AI. Użytkownik p
   - Typy związane z tabelą Generations w bazie
 
 ## 4. Szczegóły odpowiedzi
+
 - **Sukces (201 Created):**
   ```json
   {
@@ -42,6 +46,7 @@ Endpoint służy do inicjacji procesu generowania fiszek przez AI. Użytkownik p
   - 500 Internal Server Error – błąd na serwerze (np. awaria bazy danych)
 
 ## 5. Przepływ danych
+
 1. Klient wysyła żądanie POST z `source_text` do endpointa /generations.
 2. Middleware i autoryzacja sprawdzają uprawnienia użytkownika (np. z wykorzystaniem `supabase` z `context.locals`).
 3. Walidacja danych wejściowych:
@@ -53,12 +58,14 @@ Endpoint służy do inicjacji procesu generowania fiszek przez AI. Użytkownik p
 7. Opcjonalnie: Asynchroniczne wywołanie procesu generowania fiszek przez AI, z obsługą błędów (logowanie do tabeli Generation Errors) w przypadku niepowodzenia.
 
 ## 6. Względy bezpieczeństwa
+
 - **Autoryzacja:** Endpoint jest dostępny tylko dla uwierzytelnionych użytkowników (sprawdzenie przez `context.locals` i Supabase).
 - **Walidacja:** Użycie Zod do walidacji danych wejściowych, aby wyłapać nieprawidłowe dane przed operacjami bazodanowymi.
 - **Bezpieczeństwo danych:** Użycie mechanizmów ochrony przed SQL Injection i zabezpieczenie operacji na poziomie bazy (np. poprzez przygotowane zapytania).
 - **Rate Limiting:** Rozważ wdrożenie ograniczeń liczby żądań dla endpointa.
 
 ## 7. Obsługa błędów
+
 - **400 Bad Request:**
   - Brak `source_text` lub nieprawidłowa długość tekstu.
 - **401 Unauthorized:**
@@ -69,11 +76,13 @@ Endpoint służy do inicjacji procesu generowania fiszek przez AI. Użytkownik p
   - Każdy błąd podczas przetwarzania powinien być logowany, a szczególnie błędy związane z asynchronicznym procesem generacji mogą być zapisywane w tabeli Generation Errors.
 
 ## 8. Rozważania dotyczące wydajności
+
 - Weryfikacja danych powinna odbywać się przed wykonaniem operacji na bazie.
 - Indeksy na kolumnach takich jak `user_id` oraz `source_text_hash` mogą poprawić wydajność zapytań.
 - Asynchroniczne przetwarzanie przez kolejki zadań może rozłożyć obciążenie operacji generacji fiszek.
 
 ## 9. Etapy wdrożenia
+
 1. **Utworzenie schematu walidacyjnego:**
    - Implementacja walidacji `source_text` (długość między 1000 a 10000 znaków) przy użyciu Zod.
 2. **Tworzenie endpointa:**
