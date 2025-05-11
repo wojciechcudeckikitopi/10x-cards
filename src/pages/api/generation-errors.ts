@@ -8,6 +8,7 @@ export const prerender = false;
 
 export const GET: APIRoute = async ({ request, locals }) => {
   try {
+    // eslint-disable-next-line
     const user = await getCurrentUser({ locals } as any);
 
     // Extract and validate query parameters

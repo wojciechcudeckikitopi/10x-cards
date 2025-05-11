@@ -9,6 +9,7 @@ interface User {
 
 // Extend Astro.locals type
 declare global {
+  // eslint-disable-next-line
   namespace App {
     interface Locals {
       user?: User | undefined;

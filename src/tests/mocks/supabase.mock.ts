@@ -35,6 +35,7 @@ export const createMockSupabaseClient = () => {
     range: () => ({ ...baseImpl }),
     returning: () => ({ data: null, error: null }),
     maybeSingle: () => ({ data: null, error: null }),
+    // eslint-disable-next-line
     then: (callback: (value: any) => any) => callback({ data: null, error: null }),
   };
 

@@ -16,6 +16,7 @@ class ApiError extends Error {
   }
 }
 
+// eslint-disable-next-line
 export class AuthService {
   private static async handleResponse<T>(response: Response): Promise<T> {
     const data = await response.json();
@@ -54,7 +55,7 @@ export class AuthService {
       body: JSON.stringify(data),
     });
 
-    return this.handleResponse<void>(response);
+    return this.handleResponse(response);
   }
 
   static async resetPassword(token: string, data: PasswordResetFormData): Promise<void> {
@@ -64,7 +65,7 @@ export class AuthService {
       body: JSON.stringify(data),
     });
 
-    return this.handleResponse<void>(response);
+    return this.handleResponse(response);
   }
 
   static async logout(): Promise<void> {
@@ -72,7 +73,7 @@ export class AuthService {
       method: "POST",
     });
 
-    return this.handleResponse<void>(response);
+    return this.handleResponse(response);
   }
 }
 

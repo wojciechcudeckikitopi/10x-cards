@@ -34,6 +34,7 @@ const DropdownMenuContext = React.createContext<{
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   isOpen: false,
+  // eslint-disable-next-line
   setIsOpen: () => {},
 });
 

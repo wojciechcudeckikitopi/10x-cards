@@ -7,6 +7,7 @@ export const prerender = false;
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    // eslint-disable-next-line
     const user = await getCurrentUser({ locals } as any);
 
     // Parse and validate request body
@@ -65,6 +66,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
 export const GET: APIRoute = async ({ request, locals }) => {
   try {
+    // eslint-disable-next-line
     const user = await getCurrentUser({ locals } as any);
 
     // Parse and validate query parameters

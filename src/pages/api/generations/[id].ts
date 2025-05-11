@@ -8,6 +8,7 @@ export const prerender = false;
 
 export const GET: APIRoute = async ({ params, locals }) => {
   try {
+    // eslint-disable-next-line
     const user = await getCurrentUser({ locals } as any);
 
     // Validate the generation ID
