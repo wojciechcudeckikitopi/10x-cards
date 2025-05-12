@@ -1,4 +1,4 @@
-import { Label } from "@/components/ui/Label";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import type { ControllerProps, FieldPath, FieldValues } from "react-hook-form";

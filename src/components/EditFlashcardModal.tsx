@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,8 +6,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/Dialog";
-import { Label } from "@/components/ui/Label";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import type { ProposedFlashcardViewModel } from "./GenerateFlashcardsForm";
 import { Textarea } from "./ui/Textarea";

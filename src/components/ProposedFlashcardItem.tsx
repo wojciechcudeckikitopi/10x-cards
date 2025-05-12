@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/Card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import type { ProposedFlashcardViewModel } from "./GenerateFlashcardsForm";
 
 interface ProposedFlashcardItemProps {
