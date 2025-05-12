@@ -5,11 +5,11 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mockowanie modułów zewnętrznych
-vi.mock("@/components/ui/Toast", () => ({
+vi.mock("@/components/ui/toast", () => ({
   Toast: vi.fn(({ title }) => <div data-testid="toast">{title}</div>),
 }));
 
-vi.mock("@/components/ui/LoadingIndicator", () => ({
+vi.mock("@/components/ui/loadingIndicator", () => ({
   LoadingIndicator: vi.fn(() => <div data-testid="loading">Loading...</div>),
 }));
 
