@@ -8,9 +8,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import type { ProposedFlashcardViewModel } from "./GenerateFlashcardsForm";
-import { Textarea } from "./ui/Textarea";
 
 interface EditFlashcardModalProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CheckIcon, ClockIcon, FileTextIcon, XIcon } from "lucide-react";
 import type { DashboardStatsViewModel } from "../types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
-import { Skeleton } from "./ui/Skeleton";
 
 interface StatCardProps {
   title: string;

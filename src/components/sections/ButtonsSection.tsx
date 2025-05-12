@@ -1,7 +1,7 @@
-import { Button } from "../ui/Button";
-import { Card } from "../ui/Card";
-import { Typography } from "../ui/Typography";
-import { ArrowLeftIcon, ArrowRightIcon } from "../ui/icons/ArrowIcons";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ArrowLeftIcon, ArrowRightIcon } from "@/components/ui/icons/arrow-icons";
+import { Typography } from "@/components/ui/typography";
 
 export const ButtonsSection = () => {
   return (

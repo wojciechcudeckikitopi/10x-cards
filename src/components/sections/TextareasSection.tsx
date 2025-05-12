@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/Card";
-import { Textarea } from "@/components/ui/Textarea";
+import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 export const TextareasSection = () => {
   return (

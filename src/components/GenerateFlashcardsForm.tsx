@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/Button";
-import { Toast } from "@/components/ui/Feedback";
-import { LoadingIndicator } from "@/components/ui/LoadingIndicator";
+import { Button } from "@/components/ui/button";
+import { Toast } from "@/components/ui/feedback";
+import { LoadingIndicator } from "@/components/ui/loading-indicator";
 import { Textarea } from "@/components/ui/textarea";
 import type {
   CreateFlashcardsCommand,

@@ -1,6 +1,6 @@
-import { Card } from "../ui/Card";
-import { Label } from "../ui/Label";
-import { Typography } from "../ui/Typography";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/Label";
+import { Typography } from "@/components/ui/Typography";
 
 export const LabelsSection = () => {
   return (

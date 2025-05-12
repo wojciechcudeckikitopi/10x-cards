@@ -1,8 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
+import { Typography } from "@/components/ui/typography";
 import { useState } from "react";
-import { Button } from "../ui/Button";
-import { Card } from "../ui/Card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/Dialog";
-import { Typography } from "../ui/Typography";
 
 export const DialogSection = () => {
   const [isOpen, setIsOpen] = useState(false);
