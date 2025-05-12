@@ -1,5 +1,5 @@
-import { vi } from 'vitest';
-import type { SupabaseClient } from '../../db/supabase.client';
+import { vi } from "vitest";
+import type { SupabaseClient } from "../../db/supabase.client";
 
 // Create a mock Supabase client for testing
 export const createMockSupabaseClient = () => {
@@ -35,6 +35,7 @@ export const createMockSupabaseClient = () => {
     range: () => ({ ...baseImpl }),
     returning: () => ({ data: null, error: null }),
     maybeSingle: () => ({ data: null, error: null }),
+    // eslint-disable-next-line
     then: (callback: (value: any) => any) => callback({ data: null, error: null }),
   };
 

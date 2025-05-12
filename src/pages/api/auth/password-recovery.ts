@@ -1,14 +1,14 @@
-import { createSupabaseServerInstance } from '@/db/supabase.client';
-import type { APIRoute } from 'astro';
+import { createSupabaseServerInstance } from "@/db/supabase.client";
+import type { APIRoute } from "astro";
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   const { email } = await request.json();
 
-  const supabase = createSupabaseServerInstance({ 
-    cookies, 
-    headers: request.headers 
+  const supabase = createSupabaseServerInstance({
+    cookies,
+    headers: request.headers,
   });
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -21,7 +21,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
   }
 
-  return new Response(JSON.stringify({ message: 'Password reset email sent' }), {
+  return new Response(JSON.stringify({ message: "Password reset email sent" }), {
     status: 200,
   });
-}; 
+};

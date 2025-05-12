@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/Button";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/Form";
-import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/button";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { passwordResetSchema } from "@/lib/validations/auth";
 import type { PasswordResetFormData } from "@/types/auth";

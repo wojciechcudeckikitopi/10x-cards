@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 ---
 description: 
 globs: 
 alwaysApply: false
 ---
+=======
+---
+description: 
+globs: 
+alwaysApply: false
+---
+>>>>>>> 32f2128 (feat: 2x5 Repo clean up)
 
 ## Github Action Rules
 

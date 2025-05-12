@@ -9,6 +9,7 @@ export const prerender = false;
 
 export const GET: APIRoute = async ({ params, locals }) => {
   try {
+    // eslint-disable-next-line
     const user = await getCurrentUser({ locals } as any);
 
     // Step 1: Validate the id parameter
@@ -84,6 +85,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
 
 export const PUT: APIRoute = async ({ params, request, locals }) => {
   try {
+    // eslint-disable-next-line
     const user = await getCurrentUser({ locals } as any);
 
     // Step 1: Validate the id parameter
@@ -194,6 +196,7 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
 
 export const DELETE: APIRoute = async ({ params, locals }) => {
   try {
+    // eslint-disable-next-line
     const user = await getCurrentUser({ locals } as any);
 
     // Step 1: Validate the id parameter

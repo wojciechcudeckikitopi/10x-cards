@@ -23,18 +23,12 @@ export const AuthSection = () => {
 
   return (
     <div className="flex items-center gap-3">
-      <a
-        href="/auth/login"
-        className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
-      >
+      <a href="/auth/login" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
         Login
       </a>
-      <a
-        href="/auth/register"
-        className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
-      >
+      <a href="/auth/register" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
         Register
       </a>
     </div>
   );
-}; 
+};

@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { BrainIcon, ListIcon, Wand2Icon } from "lucide-react";
-import { Button } from "./ui/Button";
 
 interface ActionButtonsProps {
   isLoading?: boolean;

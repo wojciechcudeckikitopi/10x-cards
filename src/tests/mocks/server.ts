@@ -1,6 +1,6 @@
-import { setupServer } from 'msw/node';
-import { afterAll, afterEach, beforeAll } from 'vitest';
-import { handlers } from './handlers';
+import { setupServer } from "msw/node";
+import { afterAll, afterEach, beforeAll } from "vitest";
+import { handlers } from "./handlers";
 
 // This configures a request mocking server with the given request handlers.
 export const server = setupServer(...handlers);
@@ -18,4 +18,4 @@ afterEach(() => {
 // Clean up after the tests are finished
 afterAll(() => {
   server.close();
-}); 
+});

@@ -1,14 +1,6 @@
-import { Card } from "@/components/ui/Card";
-import {
-  Skeleton,
-  SkeletonAvatar,
-  SkeletonCard,
-  SkeletonCircle,
-  SkeletonList,
-  SkeletonRectangle,
-  SkeletonText,
-} from "@/components/ui/Skeleton";
-import { Typography } from "@/components/ui/Typography";
+import { Card } from "@/components/ui/card";
+import { Skeleton, SkeletonAvatar, SkeletonCard, SkeletonText } from "@/components/ui/skeleton";
+import { Typography } from "@/components/ui/typography";
 
 export function SkeletonsSection() {
   return (
@@ -36,14 +28,14 @@ export function SkeletonsSection() {
                 <Typography variant="small" className="text-gray-500 mb-2">
                   Circular Skeleton
                 </Typography>
-                <SkeletonCircle width={48} height={48} />
+                <SkeletonAvatar width={48} height={48} />
               </div>
 
               <div>
                 <Typography variant="small" className="text-gray-500 mb-2">
                   Rectangular Skeleton
                 </Typography>
-                <SkeletonRectangle width="full" height={120} />
+                <SkeletonText width="full" height={120} />
               </div>
             </div>
           </div>
@@ -78,7 +70,7 @@ export function SkeletonsSection() {
                 <Typography variant="small" className="text-gray-500 mb-2">
                   List Skeleton
                 </Typography>
-                <SkeletonList count={3} />
+                <SkeletonText count={3} />
               </div>
             </div>
           </div>

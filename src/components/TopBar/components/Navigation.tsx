@@ -1,4 +1,4 @@
-import { NavigationGroup, NavigationItem, NavigationMenu } from "@/components/ui/Navigation";
+import { NavigationGroup, NavigationItem, NavigationMenu } from "@/components/ui/navigation";
 import { useEffect, useState } from "react";
 
 const navigationItems = [

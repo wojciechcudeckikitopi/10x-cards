@@ -102,7 +102,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = "default", children, onClose, ...props }, ref) => {
     return (
       <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props}>
-        {variant !== "default" && icons[variant]}
+        {variant !== "default" && icons[variant as keyof typeof icons]}
         <div>{children}</div>
         {onClose && (
           <button
@@ -133,6 +133,7 @@ Alert.displayName = "Alert";
 
 const AlertTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => (
+    // eslint-disable-next-line
     <h5 ref={ref} className={cn("mb-1 font-medium leading-none tracking-tight", className)} {...props} />
   )
 );

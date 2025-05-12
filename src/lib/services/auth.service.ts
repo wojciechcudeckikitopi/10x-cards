@@ -1,20 +1,30 @@
-import type { AuthResponse, LoginFormData, PasswordRecoveryFormData, PasswordResetFormData, RegisterFormData } from "@/types/auth";
+import type {
+  AuthResponse,
+  LoginFormData,
+  PasswordRecoveryFormData,
+  PasswordResetFormData,
+  RegisterFormData,
+} from "@/types/auth";
 
 class ApiError extends Error {
-  constructor(message: string, public code?: string) {
+  constructor(
+    message: string,
+    public code?: string
+  ) {
     super(message);
     this.name = "ApiError";
   }
 }
 
+// eslint-disable-next-line
 export class AuthService {
   private static async handleResponse<T>(response: Response): Promise<T> {
     const data = await response.json();
-    
+
     if (!response.ok) {
       throw new ApiError(data.error || "An error occurred", data.code);
     }
-    
+
     return data;
   }
 
@@ -24,7 +34,7 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
+
     return this.handleResponse<AuthResponse>(response);
   }
 
@@ -34,7 +44,7 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
+
     return this.handleResponse<AuthResponse>(response);
   }
 
@@ -44,8 +54,8 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
-    return this.handleResponse<void>(response);
+
+    return this.handleResponse(response);
   }
 
   static async resetPassword(token: string, data: PasswordResetFormData): Promise<void> {
@@ -54,16 +64,16 @@ export class AuthService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
-    return this.handleResponse<void>(response);
+
+    return this.handleResponse(response);
   }
 
   static async logout(): Promise<void> {
     const response = await fetch("/api/auth/logout", {
       method: "POST",
     });
-    
-    return this.handleResponse<void>(response);
+
+    return this.handleResponse(response);
   }
 }
 

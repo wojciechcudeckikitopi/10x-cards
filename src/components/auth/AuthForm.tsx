@@ -1,6 +1,6 @@
-import { Alert, AlertDescription } from "@/components/ui/Alert";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Form } from "@/components/ui/Form";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface AuthFormProps<T extends FieldValues> {

@@ -4,7 +4,7 @@ export const getTestCredentials = () => {
 
   if (!username || !password) {
     throw new Error(
-      'E2E test credentials not found. Please ensure E2E_USERNAME and E2E_PASSWORD are set in .env.test file'
+      "E2E test credentials not found. Please ensure E2E_USERNAME and E2E_PASSWORD are set in .env.test file"
     );
   }
 
@@ -12,4 +12,4 @@ export const getTestCredentials = () => {
     username,
     password,
   };
-}; 
+};

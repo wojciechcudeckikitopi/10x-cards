@@ -1,4 +1,4 @@
-import { Card } from "../ui/Card";
+import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,8 +6,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/DropdownMenu";
-import { Typography } from "../ui/Typography";
+} from "@/components/ui/dropdown-menu";
+import { Typography } from "@/components/ui/typography";
 
 export function DropdownMenuSection() {
   return (

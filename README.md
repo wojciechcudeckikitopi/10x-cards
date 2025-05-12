@@ -84,6 +84,7 @@ The project uses Vitest for unit/integration tests and Playwright for E2E tests.
 ### Test Best Practices
 
 Unit tests:
+
 - Use `describe` blocks to group related tests
 - Keep tests focused on one functionality
 - Use descriptive test names
@@ -93,6 +94,7 @@ Unit tests:
 - Use factory patterns with `vi.mock()` for module mocks
 
 E2E tests:
+
 - Use Page Object Model for maintainable tests
 - Use locators for resilient element selection
 - Leverage API mocking for controlled environment

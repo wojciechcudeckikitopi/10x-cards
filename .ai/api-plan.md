@@ -14,8 +14,9 @@
 Endpoints for creating, retrieving, updating, and deleting flashcards. Supports both manually created and AI-generated flashcards.
 
 - **GET /flashcards**
+
   - Description: Retrieve a list of flashcards for the authenticated user.
-  - Query Parameters: 
+  - Query Parameters:
     - `page` (optional, default 1)
     - `limit` (optional, default 20)
     - `status` (optional: pending, accepted, rejected)
@@ -45,6 +46,7 @@ Endpoints for creating, retrieving, updating, and deleting flashcards. Supports 
   - Errors: 401 Unauthorized
 
 - **GET /flashcards/:id**
+
   - Description: Retrieve detailed information for a specific flashcard.
   - Success Response (200):
     ```json
@@ -62,6 +64,7 @@ Endpoints for creating, retrieving, updating, and deleting flashcards. Supports 
   - Errors: 401 Unauthorized, 404 Not Found
 
 - **POST /flashcards**
+
   - Description: Create one or more flashcards. This endpoint supports creating flashcards manually as well as AI-generated flashcards (both "ai" and "ai-edited"). Multiple flashcards can be submitted in a single request.
   - Request Payload:
     ```json
@@ -71,7 +74,7 @@ Endpoints for creating, retrieving, updating, and deleting flashcards. Supports 
           "front": "Text for the front (max 200 characters)",
           "back": "Text for the back (max 500 characters)",
           "source": "manual", // allowed values: "manual", "ai", "ai-edited"
-          "generation_id": "optional-generation-id"  // included if related to an AI generation
+          "generation_id": "optional-generation-id" // included if related to an AI generation
         }
       ]
     }
@@ -81,6 +84,7 @@ Endpoints for creating, retrieving, updating, and deleting flashcards. Supports 
   - Errors: 400 Bad Request (if payload or length validation fails), 401 Unauthorized
 
 - **PUT /flashcards/:id**
+
   - Description: Update an existing flashcard (editing front/back text or status).
   - Request Payload (any of the following fields):
     ```json
@@ -104,6 +108,7 @@ Endpoints for creating, retrieving, updating, and deleting flashcards. Supports 
 Endpoints to handle AI-generated flashcard processes.
 
 - **POST /generations**
+
   - Description: Initiate flashcard generation by providing source text for AI processing.
   - Request Payload:
     ```json
@@ -116,8 +121,9 @@ Endpoints to handle AI-generated flashcard processes.
   - Errors: 400 Bad Request, 401 Unauthorized
 
 - **GET /generations**
+
   - Description: Retrieve a list of generation requests for the authenticated user.
-  - Query Parameters: 
+  - Query Parameters:
     - `page`, `limit`, and optionally filter by date or llm_model.
   - Success Response (200):
     ```json
@@ -178,7 +184,6 @@ Endpoints to retrieve error logs related to flashcard generation.
     }
     ```
   - Errors: 401 Unauthorized
-
 
 ## 3. Authentication and Authorization
 

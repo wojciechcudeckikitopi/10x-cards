@@ -7,6 +7,7 @@ Ogólny przegląd zakłada istnienie uporządkowanej struktury widoków odpowiad
 ## 2. Lista widoków
 
 1. **Ekran autoryzacji**
+
    - Ścieżka: `/login`, `/register`, `/reset-password`
    - Główny cel: Umożliwienie użytkownikowi logowania, rejestracji oraz resetu hasła.
    - Kluczowe informacje do wyświetlenia: Formularze logowania, rejestracji, resetu hasła; komunikaty błędów oraz walidacja danych.
@@ -14,6 +15,7 @@ Ogólny przegląd zakłada istnienie uporządkowanej struktury widoków odpowiad
    - UX, dostępność i bezpieczeństwo: Intuicyjna nawigacja, wysoki kontrast, wsparcie dla nawigacji klawiaturowej, zabezpieczenia przy procesie autoryzacji (JWT).
 
 2. **Dashboard**
+
    - Ścieżka: `/dashboard`
    - Główny cel: Przedstawienie ogólnego przeglądu konta, statystyk oraz szybkiego dostępu do kluczowych funkcji platformy.
    - Kluczowe informacje do wyświetlenia: Statystyki (liczba fiszek, statusy), skróty do generowania fiszek, listy fiszek i panel użytkownika.
@@ -21,13 +23,15 @@ Ogólny przegląd zakłada istnienie uporządkowanej struktury widoków odpowiad
    - UX, dostępność i bezpieczeństwo: Responsywny design, intuicyjna nawigacja, czytelne prezentowanie informacji, zabezpieczenia sesyjne.
 
 3. **Widok generowania fiszek**
+
    - Ścieżka: `/generate`
-   - Główny cel: Umożliwienie wprowadzenia przez użytkownika tekstu, a następnie automatyczne generowanie fiszek przez AI. 
+   - Główny cel: Umożliwienie wprowadzenia przez użytkownika tekstu, a następnie automatyczne generowanie fiszek przez AI.
    - Kluczowe informacje do wyświetlenia: Obszar tekstowy do wprowadzania źródłowego tekstu (1000-10 000 znaków), podgląd wygenerowanych fiszek z opcjami akceptacji, odrzucenia, edycji oraz grupowego zatwierdzania zmian.
    - Kluczowe komponenty widoku: Formularz tekstowy, przycisk generowania, modal do edycji fiszek, skeleton loader i komunikaty o błędach. Dodatkowo przyciski "zapisz wszystkie" i "zapisz zatwierdzone".
    - UX, dostępność i bezpieczeństwo: Jasne instrukcje, walidacja długości, responsywność, bezpieczna komunikacja z API.
 
 4. **Widok listy fiszek**
+
    - Ścieżka: `/flashcards`
    - Główny cel: Prezentacja listy fiszek (zarówno manualnych, jak i AI-wygenerowanych) z możliwością edycji, usuwania.
    - Kluczowe informacje do wyświetlenia: Lista fiszek z informacjami (front, status, data utworzenia), kontekstowe menu akcji (edytuj, usuń), status zmian (zatwierdzone/odrzucone).
@@ -35,6 +39,7 @@ Ogólny przegląd zakłada istnienie uporządkowanej struktury widoków odpowiad
    - UX, dostępność i bezpieczeństwo: Dostępność klawiaturowa, intuicyjne komunikaty, walidacja danych, potwierdzenia operacji i zabezpieczenia przy edycji.
 
 5. **Panel użytkownika**
+
    - Ścieżka: `/user/profile`
    - Główny cel: Zarządzanie danymi użytkownika, ustawieniami konta i preferencjami.
    - Kluczowe informacje do wyświetlenia: Dane profilowe, formularze edycji, ustawienia bezpieczeństwa (np. zmiana hasła).
@@ -55,9 +60,9 @@ Ogólny przegląd zakłada istnienie uporządkowanej struktury widoków odpowiad
 3. Użytkownik wybiera opcję generowania fiszek, przechodzi do widoku generowania i wprowadza tekst źródłowy.
 4. W widoku generowania pojawia się podgląd wygenerowanych fiszek w formie listy – użytkownik może każdą z nich edytować lub odrzucić poprzez modal.
 5. Użytkownik zatwierdza listę wygenerowanych lub wyedytowanych fiszek.
-5. Po zatwierdzeniu zmian użytkownik przechodzi do widoku listy fiszek, gdzie przegląda wszystkie fiszki, dokonuje edycji lub usuwa niepotrzebne fiszki.
-6. W razie potrzeby, użytkownik odwiedza panel użytkownika w celu aktualizacji danych profilowych.
-7. W kolejnych etapach użytkownik ma możliwość rozpoczęcia sesji powtórkowych, przechodząc do widoku sesji nauki.
+6. Po zatwierdzeniu zmian użytkownik przechodzi do widoku listy fiszek, gdzie przegląda wszystkie fiszki, dokonuje edycji lub usuwa niepotrzebne fiszki.
+7. W razie potrzeby, użytkownik odwiedza panel użytkownika w celu aktualizacji danych profilowych.
+8. W kolejnych etapach użytkownik ma możliwość rozpoczęcia sesji powtórkowych, przechodząc do widoku sesji nauki.
 
 ## 4. Układ i struktura nawigacji
 
@@ -75,4 +80,4 @@ Ogólny przegląd zakłada istnienie uporządkowanej struktury widoków odpowiad
 - **Tabela/Lista fiszek:** Prezentuje zapisane fiszki w sposób przejrzysty, z opcją akcji kontekstowych (edycja, usuwanie).
 - **Skeleton Loaders:** Zapewniają informację wizualną podczas ładowania danych w różnych widokach.
 - **Komunikaty i toasty:** Informują użytkownika o błędach oraz sukcesach operacji, z uwzględnieniem walidacji i potwierdzeń.
-- **Komponent oceny sesji:** Wspiera proces nauki poprzez umożliwienie oceny fiszek, np. poprzez przyciski "łatwo"/"trudno", oraz prezentację postępu sesji. 
+- **Komponent oceny sesji:** Wspiera proces nauki poprzez umożliwienie oceny fiszek, np. poprzez przyciski "łatwo"/"trudno", oraz prezentację postępu sesji.
