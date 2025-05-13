@@ -10,7 +10,7 @@
 - **Backend:** Supabase (PostgreSQL, Authentication)
 - **AI Integration:** Uses Openrouter.ai to interface with models like OpenAI, Anthropic, and Google
 - **Testing:** Vitest, React Testing Library for unit tests, Playwright for E2E testing
-- **CI/CD & Hosting:** GitHub Actions, DigitalOcean (Docker)
+- **CI/CD & Hosting:** GitHub Actions, Cloudflare Pages
 
 ## Getting Started Locally
 
@@ -80,23 +80,3 @@ The project uses Vitest for unit/integration tests and Playwright for E2E tests.
 - E2E tests: `src/tests/e2e/`
 - Test utilities: `src/tests/utils/`
 - API mocks: `src/tests/mocks/`
-
-### Test Best Practices
-
-Unit tests:
-
-- Use `describe` blocks to group related tests
-- Keep tests focused on one functionality
-- Use descriptive test names
-- Follow the Arrange-Act-Assert pattern
-- Use `vi.fn()` for simple function mocks
-- Use `vi.spyOn()` to monitor existing functions
-- Use factory patterns with `vi.mock()` for module mocks
-
-E2E tests:
-
-- Use Page Object Model for maintainable tests
-- Use locators for resilient element selection
-- Leverage API mocking for controlled environment
-- Implement visual comparison with `expect(page).toHaveScreenshot()`
-- Use test hooks for setup and teardown
